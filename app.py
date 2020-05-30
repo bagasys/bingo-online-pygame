@@ -81,9 +81,10 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-        self.screen.fill((128, 128, 128))
 
         # Gambar-gambar
+        self.screen.fill((128, 128, 128))
+        #TO DO: Check if Waiting.
         count_player = 2
         waiting_text = "waiting player-({}/4)...".format(count_player)
         waiting_font = pygame.font.SysFont("comicsans", 80)
