@@ -62,7 +62,6 @@ class App:
         for text in self.texts_welcome:
             text.draw(self.screen)
 
-        self.redrawWindow()
         pygame.display.update()
 
     def handle_howtoplay(self):
@@ -90,7 +89,7 @@ class App:
         waiting_font = pygame.font.SysFont("comicsans", 80)
         waiting_surface = waiting_font.render(waiting_text, 0, (255, 255, 255))
         self.screen.blit(waiting_surface, (self.width / 2 - waiting_surface.get_width() / 2, self.height / 2 - waiting_surface.get_height() / 2))
-        self.redrawWindow()
+        pygame.display.update()
 
     def handle_winner(self):
         pass
