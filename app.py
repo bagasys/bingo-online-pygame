@@ -186,6 +186,7 @@ class App:
                 for btn in self.buttons_preparefinish:
                     if btn.isClicked(click_pos):
                         if (self.count > 25):
+                            pass
 
 
 
