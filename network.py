@@ -22,7 +22,6 @@ class Network:
         except:
             pass
 
-    #data format = [['type'], value]
     def send(self, data):
         try:
             self.client.sendall(pickle.dumps(data))

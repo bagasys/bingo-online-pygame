@@ -21,7 +21,7 @@ class App:
         self.STATE_HOWTOPLAY = 4
         self.STATE_PREPAREPLAY = 5
         self.count = 1
-
+        self.clock = pygame.time.Clock()
         self.texts_welcome = [Text("BINGO!", 80, 350, 50, 60, 100, (0, 0, 0)),]
         self.buttons_welcome = [Button("Join Game", 30, 300, 250, 120, 60, (0, 255, 0)),
                                 Button("How To Play", 30, 300, 320, 130, 60, (0, 255, 255)),
@@ -50,6 +50,7 @@ class App:
 
     def start(self):
         while self.RUNNING:
+            self.clock.tick(10)
             if self.GAME_STATE == self.STATE_WELCOME:
                 self.handle_welcome()
             elif self.GAME_STATE == self.STATE_PLAY:
