@@ -1,95 +1,68 @@
 from player import Player
+
 class Game:
     def __init__(self, id):
         self.players = []
-        self.chosen_number = False
-        self.player_order = []
-        self.state = 0
+        self.last_number = 0
+        self.current_number = 0
+
+        self.READY = False
+        self.MAX_PLAYER = 2
+
+        self.STATE = 0
         self.STATE_WAIT = 0
-        self.STATE_PLAY = 1
-        self.PLAYER_MAX = 2
-        # self.winner_isoke 
+        self.STATE_FILL = 1
+        self.STATE_PLAY = 2
 
-        self.p1Went = False
-        self.p2Went = False
-        self.ready = False
-        self.id = id
-        self.moves = [None, None]
-        self.wins = [0,0]
-        self.ties = 0
+        self.GILIRAN = 0
 
+    def isReadyToFill(self):
+        return len(self.players) == self.MAX_PLAYER
 
-    def get_player_move(self, p):
-        """
-        :param p: [0,1]
-        :return: Move
-        """
-        return self.moves[p]
+    def isReadyToPlay(self):
+        for i in range(self.MAX_PLAYER):
+            if self.players[i].readyToPlay == False:
+                return False
+        return True
 
-    def play(self, player, move):
-        self.moves[player] = move
-        if player == 0:
-            self.p1Went = True
-        else:
-            self.p2Went = True
+    def addPlayer(self, player_id, game_id):
+        newPlayer = Player(player_id, game_id)
+        self.players.append(newPlayer)
 
-    def connected(self):
-        return self.ready
+    def startFill(self):
+        self.STATE = self.STATE_FILL
 
-    def addPlayer(self, id, game_id):
-        newPlayer = Player(id, game_id)
-        try:
-            self.players.append(newPlayer)
-        except:
-            print("game: can't append")
-        if self.countPlayer() == self.PLAYER_MAX:
-            self.state = self.STATE_PLAY
+    def startPlay(self):
+        self.STATE = self.STATE_PLAY
 
     def countPlayer(self):
         return len(self.players)
 
-    def isRoomFull(self):
-        if self.countPlayer() == 5:
-            return True
-    
-    def bothWent(self):
-        return self.p1Went and self.p2Went
+    def isiTable(self, player_id, newTable):
+        self.players[int(player_id)].table = newTable
+        print(self.players[int(player_id)].table)
 
-    def setTable(self, player, table):
-        self.players[player].table = table
-        print(self.players[player].table)
-        if player == 0:
-            self.p1Table = True
-        elif player == 1:
-            self.p2Table = True
-        elif player == 2:
-            self.p3Table = True
-        elif player == 3:
-            self.p4Table = True
-        elif player == 4:
-            self.p5Table = True
+    def isWinner(self, id):
+        for i in range (5):
+            win = 1
+            for j in range (25):
+                if(j % 5 == i and self.players[int(id)].tableCoret[j] == False):
+                    win = 0
+                    break
+            if(win == 1):
+                return True
 
-    def winner(self):
+    def coret(self, angka, player_id):
+        print('giliran: ', self.GILIRAN, 'player_id:', player_id )
+        if self.GILIRAN != player_id:
+            return
 
-        p1 = self.moves[0].upper()[0]
-        p2 = self.moves[1].upper()[0]
+        print('luar coret')
+        for i in range(len(self.players)):
+            print(self.players[i])
+            index = self.players[i].table.index(angka)
+            self.players[i].tableCoret[index] = True
+            print(self.players[i].tableCoret)
 
-        winner = -1
-        if p1 == "R" and p2 == "S":
-            winner = 0
-        elif p1 == "S" and p2 == "R":
-            winner = 1
-        elif p1 == "P" and p2 == "R":
-            winner = 0
-        elif p1 == "R" and p2 == "P":
-            winner = 1
-        elif p1 == "S" and p2 == "P":
-            winner = 0
-        elif p1 == "P" and p2 == "S":
-            winner = 1
+        self.GILIRAN = (self.GILIRAN + 1) % self.MAX_PLAYER
 
-        return winner
-
-    def resetWent(self):
-        self.p1Went = False
-        self.p2Went = False

@@ -4,7 +4,13 @@ class Player:
         self.game_id = game_id
         self.table = []
         self.tableCoret = []
+        self.readyToPlay = False
+        self.selectedNumber = None
 
         for i in range(25):
             self.table.append(0)
             self.tableCoret.append(False)
+
+    def imReady(self):
+        self.readyToPlay = True
+        print("player: INI READY GAES", self.readyToPlay)

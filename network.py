@@ -12,13 +12,10 @@ class Network:
         except:
             print("network: can't connect to sever")
 
-    def getId(self):
-        return self.id
-
     def connect(self):
         try:
             self.client.connect(self.addr)
-            return self.client.recv(2048).decode()
+            return pickle.loads(self.client.recv(2048*3))
         except:
             pass
 
