@@ -120,12 +120,6 @@ class App:
         if not self.net:
             self.net = Network()
             try:
-                self.player = int(self.net.getP())
-                print(self.player)
-            except:
-                self.run = False
-                print("app: Can't get player info")
-            try:
                 data = {}
                 data['type'] = 'join'
                 data['payload'] = None
@@ -140,7 +134,7 @@ class App:
                 data['payload'] = None
                 print(data)
                 self.game = self.net.send(data)
-
+                self.player = self.game.players[self.net.id]
             self.frame_count = ( self.frame_count + 1 ) % 30
 
 

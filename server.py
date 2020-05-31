@@ -33,18 +33,21 @@ class Server:
                     else:
                         if data['type'] == "join":
                             if not game.isRoomFull():
-                                game.addPlayer(p)
+                                try:
+                                    game.addPlayer(p, gameId)
+                                except:
+                                    print('server: cannot add player')
                         elif data['type'] == "reset":
                             game.resetWent()
-                        # elif data['type'] != "get":
-                        #     game.play(p, data)
                         elif data['type'] == "table":
                             try:
                                 game.setTable(p, data[1])
                             except:
                                 print("game gagal nge set table")
-
-                        conn.sendall(pickle.dumps(game))
+                        try:
+                            conn.sendall(pickle.dumps(game))
+                        except:
+                            print("server: can't send game")
                 else:
                     break
             except:
