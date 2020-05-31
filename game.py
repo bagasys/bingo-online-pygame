@@ -57,7 +57,7 @@ class Game:
         print('luar coret')
         for i in range(len(self.players)):
             print(self.players[i])
-            index = self.players[i].table.index(3)
+            index = self.players[i].table.index(angka)
             self.players[i].tableCoret[index] = True
             print('coret!!!')
             print(self.players[i].tableCoret)

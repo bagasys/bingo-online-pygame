@@ -152,11 +152,9 @@ class App:
                 if self.button_send.isClicked(click_pos):
                     data = {}
                     data['type'] = 'coret'
-                    data['payload'] = 3
-                    print('APP: lama:', self.player.tableCoret)
+                    data['payload'] = self.selectedNumber
                     self.game = self.net.send(data)
-                    # self.player = self.game.players[self.player.id]
-                    print('APP: lama:', self.player.tableCoret)
+                    self.player = self.game.players[self.player.id]
                     # self.updateCell()
                     if self.selectedCell != None:
                         self.selectedCell.selected = False
@@ -166,8 +164,13 @@ class App:
         #Gambar gambar
         self.screen.fill((0, 0, 1))
 
-        for button in self.buttons_prepareplay:
-            button.draw(self.screen)
+        for i in range(25):
+            if self.player.tableCoret[i]:
+
+                self.buttons_prepareplay[i].coret = True
+                print(self.buttons_prepareplay[i].coret)
+            self.buttons_prepareplay[i].draw(self.screen)
+
         self.button_send.draw(self.screen)
         # for text in self.texts_prepareplay:
         #     text.draw(self.screen)
@@ -221,7 +224,6 @@ class App:
                             data['type'] = 'isiTable'
                             data['payload'] = self.table
                             self.game = self.net.send(data)
-                            print("app: ke click woy")
                             break
 
         # Gambar-gambar
@@ -283,7 +285,6 @@ class App:
                 data = {}
                 data['type'] = 'update'
                 data['payload'] = None
-                print(data)
                 self.game = self.net.send(data)
                 self.player = self.game.players[int(self.net.id)]
             self.frame_count = ( self.frame_count + 1 ) % 30

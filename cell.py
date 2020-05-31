@@ -11,14 +11,16 @@ class Cell():
         self.height = height
         self.font_size = font_size
         self.coret = False
+        self.selected = False
 
     def draw(self, win):
         if self.coret:
             self.color = (255, 0, 255)
-        if self.selected:
+        elif self.selected:
             self.color = (0, 255, 255)
         else:
             self.color = (0, 255, 0)
+
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height))
         font = pygame.font.SysFont("comicsans", self.font_size)
         text = font.render(self.text, 1, (255, 255, 255))
