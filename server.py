@@ -17,6 +17,7 @@ class Server:
         self.idCount = 0
         self.connected = set()
         self.games = {}
+        self.MAX_PLAYER = 2
 
     def threaded_client(self, conn, p, gameId):
         conn.send(str.encode(str(p)))
@@ -65,13 +66,13 @@ class Server:
 
             self.idCount += 1
             p = 0
-            gameId = (self.idCount - 1) // 5
-            if self.idCount % 5 == 1:
+            gameId = (self.idCount - 1) // self.MAX_PLAYER
+            if self.idCount % self.MAX_PLAYER == 1:
                 self.games[gameId] = Game(gameId)
                 print("Creating a new game...")
             else:
                 self.games[gameId].ready = True
-                p = self.idCount % 5
+                p = self.idCount % self.MAX_PLAYER
 
             start_new_thread(self.threaded_client, (conn, p, gameId))
 # print("Waiting for a connection, Server Started")

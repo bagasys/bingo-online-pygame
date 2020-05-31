@@ -62,6 +62,7 @@ class App:
                 self.handle_howtoplay()
             elif self.GAME_STATE == self.STATE_PREPAREPLAY:
                 self.handle_prepareplay()
+
         pygame.quit()
 
     def handle_welcome(self):
@@ -142,12 +143,12 @@ class App:
 
             self.frame_count = ( self.frame_count + 1 ) % 30
 
-            # Event Handling
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.RUNNING = False
 
             if self.game.state == self.game.STATE_WAIT:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.RUNNING = False
+
                 # Gambar-gambar
                 self.screen.fill((128, 128, 128))
                 # TO DO: Check if Waiting.
@@ -161,11 +162,7 @@ class App:
                 pygame.display.update()
 
             elif self.game.state == self.game.STATE_PLAY:
-                pass
-
-
-
-
+                self.handle_prepareplay()
 
     def handle_winner(self):
         pass

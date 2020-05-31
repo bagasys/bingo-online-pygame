@@ -6,7 +6,7 @@ class Game:
         self.state = 0
         self.STATE_WAIT = 0
         self.STATE_PLAY = 1
-        self.PLAYER_MAX = 5
+        self.PLAYER_MAX = 2
         # self.winner_isoke 
 
         self.p1Went = False
