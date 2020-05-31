@@ -52,4 +52,9 @@ class Game:
             if(win == 1):
                 return True
 
+    def coret(self, angka):
+        for player in self.players:
+            index = player.table.index(int(angka))
+            player.tableCoret[index] = True
 
+    
