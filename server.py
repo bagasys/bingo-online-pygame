@@ -52,7 +52,7 @@ class Server:
                                 game.startPlay()
                                 print("server: ready to play")
                         elif data['type'] == "coret":
-                            game.coret(data['payload'])
+                            game.coret(data['payload'], p)
                         try:
                             conn.sendall(pickle.dumps(game))
                         except:

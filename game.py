@@ -14,6 +14,8 @@ class Game:
         self.STATE_FILL = 1
         self.STATE_PLAY = 2
 
+        self.GILIRAN = 0
+
     def isReadyToFill(self):
         return len(self.players) == self.MAX_PLAYER
 
@@ -53,7 +55,10 @@ class Game:
             if(win == 1):
                 return True
 
-    def coret(self, angka):
+    def coret(self, angka, player_id):
+        if self.GILIRAN != player_id:
+            return
+
         print('luar coret')
         for i in range(len(self.players)):
             print(self.players[i])
@@ -61,4 +66,6 @@ class Game:
             self.players[i].tableCoret[index] = True
             print('coret!!!')
             print(self.players[i].tableCoret)
+
+        (self.GILIRAN + 1) % self.MAX_PLAYER
 
