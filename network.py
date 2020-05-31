@@ -8,12 +8,12 @@ class Network:
         self.port = 5555
         self.addr = (self.server, self.port)
         try:
-            self.p = self.connect()
+            self.id = self.connect()
         except:
             print("network: can't connect to sever")
 
-    def getP(self):
-        return self.p
+    def getId(self):
+        return self.id
 
     def connect(self):
         try:
