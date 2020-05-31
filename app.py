@@ -13,6 +13,7 @@ class App:
         self.SCREEN_RESOLUTION = (self.width, self.height)
 
         self.screen = pygame.display.set_mode(self.SCREEN_RESOLUTION)
+        self.frame_count = 0
 
         self.GAME_STATE = 1
         self.STATE_WELCOME = 1
@@ -131,27 +132,36 @@ class App:
             except:
                 self.run = False
                 print("app: Couldn't get game\n")
+        else:
+            if self.frame_count == 29:
+                data = {}
+                data['type'] = 'update'
+                data['payload'] = None
+                print(data)
+                self.game = self.net.send(data)
 
-        # Event Handling
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.RUNNING = False
+            self.frame_count = ( self.frame_count + 1 ) % 30
 
-        if self.game.state == self.game.STATE_WAIT:
-            # Gambar-gambar
-            self.screen.fill((128, 128, 128))
-            # TO DO: Check if Waiting.
-            # count_player = 2
-            count_player = self.game.countPlayer()
-            waiting_text = "waiting player-({}/5)...".format(count_player)
-            waiting_font = pygame.font.SysFont("comicsans", 80)
-            waiting_surface = waiting_font.render(waiting_text, 0, (255, 255, 255))
-            self.screen.blit(waiting_surface, (
-            self.width / 2 - waiting_surface.get_width() / 2, self.height / 2 - waiting_surface.get_height() / 2))
-            pygame.display.update()
+            # Event Handling
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.RUNNING = False
 
-        elif self.game.state == self.game.STATE_PLAY:
-            pass
+            if self.game.state == self.game.STATE_WAIT:
+                # Gambar-gambar
+                self.screen.fill((128, 128, 128))
+                # TO DO: Check if Waiting.
+                # count_player = 2
+                count_player = self.game.countPlayer()
+                waiting_text = "waiting player-({}/5)...".format(count_player)
+                waiting_font = pygame.font.SysFont("comicsans", 80)
+                waiting_surface = waiting_font.render(waiting_text, 0, (255, 255, 255))
+                self.screen.blit(waiting_surface, (
+                self.width / 2 - waiting_surface.get_width() / 2, self.height / 2 - waiting_surface.get_height() / 2))
+                pygame.display.update()
+
+            elif self.game.state == self.game.STATE_PLAY:
+                pass
 
 
 

@@ -33,11 +33,10 @@ class Server:
                         if data['type'] == "join":
                             if not game.isRoomFull():
                                 game.addPlayer(p)
-
                         elif data['type'] == "reset":
                             game.resetWent()
-                        elif data['type'] != "get":
-                            game.play(p, data)
+                        # elif data['type'] != "get":
+                        #     game.play(p, data)
                         elif data['type'] == "table":
                             try:
                                 game.setTable(p, data[1])
