@@ -26,6 +26,7 @@ class App:
 
         self.texts_play = [Text("PLAY", 80, 350, 50, 60, 100, (0, 0, 0)), ]
         self.texts_howtoplay = [Text("HOW TO PLAY", 80, 350, 50, 60, 100, (0, 0, 0)), ]
+        self.buttons_howtoplay = [Button("Home", 30, 300, 390, 120, 60, (0, 255, 0))]
 
     def start(self):
         while self.RUNNING:
@@ -68,9 +69,20 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                click_pos = pygame.mouse.get_pos()
+                for btn in self.buttons_howtoplay:
+                    if btn.isClicked(click_pos):
+                        if btn.text == "Home":
+                            self.GAME_STATE = self.STATE_WELCOME
+                            return
+                        
 
         # Gambar-gambar
         self.screen.fill((128, 128, 128))
+        for button in self.buttons_howtoplay:
+            button.draw(self.screen)
+
         for text in self.texts_howtoplay:
             text.draw(self.screen)
         pygame.display.update()
