@@ -1,4 +1,3 @@
-from player import Player
 class Game:
     def __init__(self, id):
         self.players = []
@@ -36,9 +35,8 @@ class Game:
     def connected(self):
         return self.ready
 
-    def addPlayer(self, id, game_id):
-        newPlayer = Player(id, game_id)
-        self.players.append(newPlayer)
+    def addPlayer(self, player):
+        self.players.append(player)
         if self.countPlayer() == self.PLAYER_MAX:
             self.state = self.STATE_PLAY
 
