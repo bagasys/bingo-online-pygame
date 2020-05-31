@@ -30,13 +30,13 @@ class Server:
                     if not data:
                         break
                     else:
-                        if listToStr(data[0]) == "reset":
-                            game.resetWent()
-                        elif listToStr(data[0]) == "get":
+                        if data['type'] == "join":
                             game.addPlayer(p)
-                        elif listToStr(data[0]) != "get":
+                        elif data['type'] == "reset":
+                            game.resetWent()
+                        elif data['type'] != "get":
                             game.play(p, data)
-                        elif listToStr(data[0]) == "table":
+                        elif data['type'] == "table":
                             try:
                                 game.setTable(p, data[1])
                             except:

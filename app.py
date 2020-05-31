@@ -123,7 +123,10 @@ class App:
                 self.run = False
                 print("app: Can't get player info")
             try:
-                self.game = self.net.send([["get"], 1])
+                data = {}
+                data['type'] = 'join'
+                data['payload'] = None
+                self.game = self.net.send(data)
             except:
                 self.run = False
                 print("app: Couldn't get game\n")
