@@ -6,5 +6,5 @@ class Player:
         self.tableCoret = []
 
         for i in range(25):
-            self.table[i] = 0
-            self.tableCoret[i] = False
+            self.table.append(0)
+            self.tableCoret.append(False)

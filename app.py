@@ -105,7 +105,6 @@ class App:
                             self.GAME_STATE = self.STATE_WELCOME
                             return
                         
-
         # Gambar-gambar
         self.screen.fill((128, 128, 128))
         for button in self.buttons_howtoplay:
@@ -134,7 +133,7 @@ class App:
                 data['payload'] = None
                 print(data)
                 self.game = self.net.send(data)
-                self.player = self.game.players[self.net.id]
+                self.player = self.game.players[int(self.net.id)]
             self.frame_count = ( self.frame_count + 1 ) % 30
 
 

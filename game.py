@@ -38,7 +38,10 @@ class Game:
 
     def addPlayer(self, id, game_id):
         newPlayer = Player(id, game_id)
-        self.players.append(newPlayer)
+        try:
+            self.players.append(newPlayer)
+        except:
+            print("game: can't append")
         if self.countPlayer() == self.PLAYER_MAX:
             self.state = self.STATE_PLAY
 
