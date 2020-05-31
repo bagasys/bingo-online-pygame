@@ -19,16 +19,30 @@ class App:
         self.STATE_PLAY = 2
         self.STATE_WINNER = 3
         self.STATE_HOWTOPLAY = 4
-
+        self.STATE_PREPAREPLAY = 5
+        self.count = 1
 
         self.texts_welcome = [Text("BINGO!", 80, 350, 50, 60, 100, (0, 0, 0)),]
-        self.buttons_welcome = [Button("Join Game", 30, 300, 250, 120, 60, (0, 255, 0)), Button("How To Play", 30, 300, 320, 130, 60, (0, 255, 255))]
-
+        self.buttons_welcome = [Button("Join Game", 30, 300, 250, 120, 60, (0, 255, 0)), Button("How To Play", 30, 300, 320, 130, 60, (0, 255, 255)), Button("Prepare Play", 30, 300, 390, 130, 60, (0, 255, 255))]
+        
         self.texts_play = [Text("PLAY", 80, 350, 50, 60, 100, (0, 0, 0)), ]
         self.texts_howtoplay = [Text("HOW TO PLAY", 80, 350, 50, 60, 100, (0, 0, 0)), ]
         self.buttons_howtoplay = [Button("Home", 30, 300, 390, 120, 60, (0, 255, 0))]
 
+        self.texts_prepareplay = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)), Text("", 40, 625, 200, 60, 100, (0, 0, 0))]
+        self.texts_confirmprepareplay = [Text("Confirm", 40, 625, 250, 60, 100, (0, 0, 0))]
+        self.buttons_prepareplay = []
+        
+        
+        for row in range(5):
+            for column in range(5):
+                x = 100 + 80 * column + 5 * column
+                y = 100 + 80 * row + 5 * row
+                self.buttons_temp = Button("", 30, x, y, 80, 80, (0, 255, 0))
+                self.buttons_prepareplay.append(self.buttons_temp)
+
     def start(self):
+        count = 0
         while self.RUNNING:
             if self.GAME_STATE == self.STATE_WELCOME:
                 self.handle_welcome()
@@ -38,6 +52,8 @@ class App:
                 self.handle_winner()
             elif self.GAME_STATE == self.STATE_HOWTOPLAY:
                 self.handle_howtoplay()
+            elif self.GAME_STATE == self.STATE_PREPAREPLAY:
+                self.handle_prepareplay(count)
         pygame.quit()
 
     def handle_welcome(self):
@@ -48,11 +64,14 @@ class App:
                 click_pos = pygame.mouse.get_pos()
                 for btn in self.buttons_welcome:
                     if btn.isClicked(click_pos):
-                        if btn.text == "Join Game":
+                        if btn.text == "Join Game":     
                             self.GAME_STATE = self.STATE_PLAY
                             return
                         elif btn.text == "How To Play":
                             self.GAME_STATE = self.STATE_HOWTOPLAY
+                            return
+                        elif btn.text == "Prepare Play":
+                            self.GAME_STATE = self.STATE_PREPAREPLAY
                             return
 
         # Gambar-gambar
@@ -77,7 +96,6 @@ class App:
                             self.GAME_STATE = self.STATE_WELCOME
                             return
                         
-
         # Gambar-gambar
         self.screen.fill((128, 128, 128))
         for button in self.buttons_howtoplay:
@@ -86,6 +104,40 @@ class App:
         for text in self.texts_howtoplay:
             text.draw(self.screen)
         pygame.display.update()
+    
+    def handle_prepareplay(self, count):
+        # Event Handling
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.RUNNING = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                click_pos = pygame.mouse.get_pos()
+                for btn in self.buttons_prepareplay:
+                    if btn.isClicked(click_pos):
+                        if(self.count <= 25 and btn.text == ""):    
+                            btn.text = str(self.count)
+                            self.count += 1
+                        self.GAME_STATE = self.STATE_PREPAREPLAY
+                        return
+        
+        # Gambar-gambar
+        self.screen.fill((128, 128, 128))
+        for button in self.buttons_prepareplay:
+            button.draw(self.screen)
+
+        if(self.count <= 25):
+            self.texts_prepareplay[1].text = str(self.count)
+        else:
+            self.texts_prepareplay[1].text = "-"
+
+        for text in self.texts_prepareplay:
+            text.draw(self.screen)
+        
+        if(self.count > 25):
+            for text in self.texts_confirmprepareplay:
+                text.draw(self.screen)
+        pygame.display.update()
+
 
     def handle_play(self):
         # Event Handling
