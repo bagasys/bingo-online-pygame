@@ -175,10 +175,16 @@ class App:
                     if btn.isClicked(click_pos):
                         if (self.count <= 25 and btn.text == ""):
                             btn.text = str(self.count)
+                            self.player.tableCoret.append(self.count)
+                            self.player.table.append(False)
                             self.count += 1
                 for btn in self.buttons_preparefinish:
                     if btn.isClicked(click_pos):
                         if (self.count > 25):
+                            data = {}
+                            data['type'] = 'player'
+                            data['payload'] = self.player
+                            self.game = self.net.send(data)
                             pass
 
 
