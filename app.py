@@ -3,17 +3,14 @@ from network import Network
 from button import Button
 from text import Text
 from cell import Cell
+from tabel import Tabel
 
 class App:
     def __init__(self):
         self.selectedNumber = None
-        self.table = []
-        for i in range(25):
-            self.table.append(0)
+        self.tabel = Tabel()
 
-        self.selectedCell = None
         pygame.init()
-        self.count = 1
         self.RUNNING = True
         self.width = 800
         self.height = 600
@@ -49,19 +46,10 @@ class App:
                                   Text("", 40, 625, 200, 60, 100, (0, 0, 0))]
 
         self.buttons_preparefinish = [Button("Confirm", 40, 625, 250, 60, 100, (0, 0, 0))]
-        self.buttons_prepareplay = []
 
         self.texts_play = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)),]
 
         self.button_send = Button("Send", 40, 625, 250, 60, 100, (0, 0, 0))
-
-        for row in range(5):
-            for column in range(5):
-                x = 100 + 80 * column + 5 * column
-                y = 100 + 80 * row + 5 * row
-                button_temp = Cell("", 30, x, y, 80, 80, (0, 255, 0))
-                button_temp.selected = False
-                self.buttons_prepareplay.append(button_temp)
 
     def start(self):
         while self.RUNNING:
@@ -141,35 +129,26 @@ class App:
                 self.RUNNING = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click_pos = pygame.mouse.get_pos()
-                for btn in self.buttons_prepareplay:
-                    if btn.isClicked(click_pos):
-                        if(self.selectedCell != None):
-                            self.selectedCell.selected = False
-                        self.selectedNumber = int(btn.text)
-                        self.selectedCell = btn
-                        self.selectedCell.selected = True
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    click_pos = pygame.mouse.get_pos()
+                    idx_clicked = self.tabel.checkClick(click_pos)
+                    print(idx_clicked)
+                    if idx_clicked != -1:
+                        self.tabel.pilihKotak(idx_clicked)
 
-                if self.button_send.isClicked(click_pos):
+                if self.button_send.isClicked(click_pos) and self.tabel.angkaTerpilih != None:
                     data = {}
                     data['type'] = 'coret'
-                    data['payload'] = self.selectedNumber
+                    data['payload'] = self.tabel.angkaTerpilih
                     self.game = self.net.send(data)
-                    self.player = self.game.players[self.player.id]
-                    # self.updateCell()
-                    if self.selectedCell != None:
-                        self.selectedCell.selected = False
-                        self.selectedCell = None
+                    self.player = self.game.players[self.net.id]
+                    self.tabel.tabelCoret = self.player.tableCoret
 
 
         #Gambar gambar
         self.screen.fill((0, 0, 1))
 
-        for i in range(25):
-            if self.player.tableCoret[i]:
-
-                self.buttons_prepareplay[i].coret = True
-                print(self.buttons_prepareplay[i].coret)
-            self.buttons_prepareplay[i].draw(self.screen)
+        self.tabel.draw(self.screen)
 
         self.button_send.draw(self.screen)
         # for text in self.texts_prepareplay:
@@ -199,11 +178,6 @@ class App:
 
         pygame.display.update()
 
-    def updateCell(self):
-        for i in range(25):
-            if self.player.tableCoret[i]:
-                self.buttons_prepareplay[i].coret = True
-
     def handlePrepare(self):
         # Event Handling
         for event in pygame.event.get():
@@ -211,35 +185,29 @@ class App:
                 self.RUNNING = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click_pos = pygame.mouse.get_pos()
-                for btn in self.buttons_prepareplay:
-                    if btn.isClicked(click_pos):
-                        if (self.count <= 25 and btn.text == ""):
-                            btn.text = str(self.count)
-                            self.table[self.buttons_prepareplay.index(btn)] = self.count
-                            self.count += 1
+                idx_clicked = self.tabel.checkClick(click_pos)
+                print(idx_clicked)
+                if idx_clicked != -1:
+                    self.tabel.isiTabel(idx_clicked)
+
                 for btn in self.buttons_preparefinish:
                     if btn.isClicked(click_pos):
-                        if (self.count > 25):
+                        if (self.tabel.count_isi > 24):
                             data = {}
                             data['type'] = 'isiTable'
-                            data['payload'] = self.table
+                            data['payload'] = self.tabel.tabel
+                            print('payload:', data['payload'])
                             self.game = self.net.send(data)
                             break
 
         # Gambar-gambar
         self.screen.fill((128, 128, 128))
-        for button in self.buttons_prepareplay:
-            button.draw(self.screen)
-
-        if (self.count <= 25):
-            self.texts_prepareplay[1].text = str(self.count)
-        else:
-            self.texts_prepareplay[1].text = "-"
+        self.tabel.draw(self.screen)
 
         for text in self.texts_prepareplay:
             text.draw(self.screen)
 
-        if (self.count > 25):
+        if (self.tabel.count_isi > 24):
             for btn in self.buttons_preparefinish:
                 btn.draw(self.screen)
         pygame.display.update()
@@ -274,7 +242,8 @@ class App:
                     self.game = self.net.send(data)
                 except:
                     print("app: gagal dapet game pas awal")
-                self.player = self.game.players[int(self.net.id)]
+                self.player = self.game.players[self.net.id]
+                self.tabel.tabelCoret = self.player.tableCoret
                 return True
             except:
                 self.run = False
@@ -287,6 +256,9 @@ class App:
                 data['payload'] = None
                 self.game = self.net.send(data)
                 self.player = self.game.players[int(self.net.id)]
+                self.tabel.tabelCoret = self.player.tableCoret
+                print('tabel coret terbaru:')
+                print(self.player.tableCoret)
             self.frame_count = ( self.frame_count + 1 ) % 30
             return True
 

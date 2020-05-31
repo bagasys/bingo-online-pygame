@@ -1,29 +1,31 @@
-from button import Button
 import pygame
 
 class Cell():
     def __init__(self, text, font_size, x, y, width, height, color):
-        self.text = text
+        self.text = ''
         self.x = x
         self.y = y
         self.color = color
         self.width = width
         self.height = height
         self.font_size = font_size
-        self.coret = False
-        self.selected = False
 
-    def draw(self, win):
-        if self.coret:
+    def draw(self, win, tulisan, tercoret, terpilih):
+        if tulisan == None:
+            self.text = ''
+        else:
+            self.text = tulisan
+
+        if tercoret:
             self.color = (255, 0, 255)
-        elif self.selected:
+        elif terpilih:
             self.color = (0, 255, 255)
         else:
             self.color = (0, 255, 0)
 
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height))
         font = pygame.font.SysFont("comicsans", self.font_size)
-        text = font.render(self.text, 1, (255, 255, 255))
+        text = font.render(str(self.text), 1, (255, 255, 255))
         win.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),
                         self.y + round(self.height / 2) - round(text.get_height() / 2)))
 
