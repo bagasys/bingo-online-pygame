@@ -4,6 +4,9 @@ class Game:
         self.chosen_number = False
         self.player_order = []
         self.state = 0
+        self.STATE_WAIT = 0
+        self.STATE_PLAY = 1
+        self.PLAYER_MAX = 5
         # self.winner_isoke 
 
         self.p1Went = False
@@ -13,6 +16,7 @@ class Game:
         self.moves = [None, None]
         self.wins = [0,0]
         self.ties = 0
+
 
     def get_player_move(self, p):
         """
@@ -33,6 +37,8 @@ class Game:
 
     def addPlayer(self, player):
         self.players.append(player)
+        if self.countPlayer() == self.PLAYER_MAX:
+            self.state = self.STATE_PLAY
 
     def countPlayer(self):
         return len(self.players)

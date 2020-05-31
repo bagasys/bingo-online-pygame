@@ -137,16 +137,25 @@ class App:
             if event.type == pygame.QUIT:
                 self.RUNNING = False
 
-        # Gambar-gambar
-        self.screen.fill((128, 128, 128))
-        #TO DO: Check if Waiting.
-        # count_player = 2
-        count_player = self.game.countPlayer()
-        waiting_text = "waiting player-({}/5)...".format(count_player)
-        waiting_font = pygame.font.SysFont("comicsans", 80)
-        waiting_surface = waiting_font.render(waiting_text, 0, (255, 255, 255))
-        self.screen.blit(waiting_surface, (self.width / 2 - waiting_surface.get_width() / 2, self.height / 2 - waiting_surface.get_height() / 2))
-        pygame.display.update()
+        if self.game.state == self.game.STATE_WAIT:
+            # Gambar-gambar
+            self.screen.fill((128, 128, 128))
+            # TO DO: Check if Waiting.
+            # count_player = 2
+            count_player = self.game.countPlayer()
+            waiting_text = "waiting player-({}/5)...".format(count_player)
+            waiting_font = pygame.font.SysFont("comicsans", 80)
+            waiting_surface = waiting_font.render(waiting_text, 0, (255, 255, 255))
+            self.screen.blit(waiting_surface, (
+            self.width / 2 - waiting_surface.get_width() / 2, self.height / 2 - waiting_surface.get_height() / 2))
+            pygame.display.update()
+
+        elif self.game.state == self.game.STATE_PLAY:
+            pass
+
+
+
+
 
     def handle_winner(self):
         pass

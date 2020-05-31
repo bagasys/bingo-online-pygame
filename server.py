@@ -31,7 +31,9 @@ class Server:
                         break
                     else:
                         if data['type'] == "join":
-                            game.addPlayer(p)
+                            if not game.isRoomFull():
+                                game.addPlayer(p)
+
                         elif data['type'] == "reset":
                             game.resetWent()
                         elif data['type'] != "get":
