@@ -1,11 +1,5 @@
 class Game:
     def __init__(self, id):
-        self.players = []
-        self.chosen_number = False
-        self.player_order = []
-        self.state = 0
-        # self.winner_isoke 
-
         self.p1Went = False
         self.p2Went = False
         self.ready = False
@@ -31,32 +25,8 @@ class Game:
     def connected(self):
         return self.ready
 
-    def addPlayer(self, player):
-        self.players.append(player)
-
-    def countPlayer(self):
-        return len(self.players)
-
-    def isRoomFull(self):
-        if self.countPlayer() == 5:
-            return True
-    
     def bothWent(self):
         return self.p1Went and self.p2Went
-
-    def setTable(self, player, table):
-        self.players[player].table = table
-        print(self.players[player].table)
-        if player == 0:
-            self.p1Table = True
-        elif player == 1:
-            self.p2Table = True
-        elif player == 2:
-            self.p3Table = True
-        elif player == 3:
-            self.p4Table = True
-        elif player == 4:
-            self.p5Table = True
 
     def winner(self):
 

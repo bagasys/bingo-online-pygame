@@ -3,6 +3,10 @@ from _thread import *
 import pickle
 from game import Game
 
+def listToStr(s):  
+    str1 = " " 
+    return (str1.join(s)) 
+
 class Server:
     def __init__(self):
         self.server = 'localhost'
@@ -18,7 +22,7 @@ class Server:
         conn.send(str.encode(str(p)))
         while True:
             try:
-                data = conn.recv(4096).decode()
+                data = pickle.loads(conn.recv(4096))
 
                 if gameId in self.games:
                     game = self.games[gameId]
@@ -26,10 +30,17 @@ class Server:
                     if not data:
                         break
                     else:
-                        if data == "reset":
+                        if listToStr(data[0]) == "reset":
                             game.resetWent()
-                        elif data != "get":
+                        elif listToStr(data[0]) == "get":
+                            game.addPlayer(p)
+                        elif listToStr(data[0]) != "get":
                             game.play(p, data)
+                        elif listToStr(data[0]) == "table":
+                            try:
+                                game.setTable(p, data[1])
+                            except:
+                                print("game gagal nge set table")
 
                         conn.sendall(pickle.dumps(game))
                 else:
@@ -53,13 +64,13 @@ class Server:
 
             self.idCount += 1
             p = 0
-            gameId = (self.idCount - 1) // 2
-            if self.idCount % 2 == 1:
+            gameId = (self.idCount - 1) // 5
+            if self.idCount % 5 == 1:
                 self.games[gameId] = Game(gameId)
                 print("Creating a new game...")
             else:
                 self.games[gameId].ready = True
-                p = 1
+                p = self.idCount % 5
 
             start_new_thread(self.threaded_client, (conn, p, gameId))
 # print("Waiting for a connection, Server Started")

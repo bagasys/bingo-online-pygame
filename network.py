@@ -7,7 +7,10 @@ class Network:
         self.server = "localhost"
         self.port = 5555
         self.addr = (self.server, self.port)
-        self.p = self.connect()
+        try:
+            self.p = self.connect()
+        except:
+            print("network: can't connect to sever")
 
     def getP(self):
         return self.p
@@ -19,9 +22,10 @@ class Network:
         except:
             pass
 
+    #data format = [['type'], value]
     def send(self, data):
         try:
-            self.client.send(str.encode(data))
+            self.client.sendall(pickle.dumps(data))
             return pickle.loads(self.client.recv(2048*2))
         except socket.error as e:
             print(e)
