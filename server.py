@@ -32,7 +32,6 @@ class Server:
                                 try:
                                     game.addPlayer(p, gameId)
                                     if game.isReadyToFill():
-                                        print('PLAYYY!!')
                                         game.startFill()
                                         print(game.STATE)
                                 except:
@@ -43,8 +42,6 @@ class Server:
                             try:
                                 table = data['payload']
                                 game.isiTable(p, table)
-                                print("server: berhasil isi table")
-                                print("server: p=", p)
                                 game.players[int(p)].imReady()
                             except:
                                 print("server: gagal isi table")
@@ -53,6 +50,7 @@ class Server:
                                 print("server: ready to play")
                         elif data['type'] == "coret":
                             game.coret(data['payload'], p)
+                            print('player:', p)
                         try:
                             conn.sendall(pickle.dumps(game))
                         except:
@@ -77,16 +75,17 @@ class Server:
             print("Connected to:", addr)
 
             self.idCount += 1
+
             p = 0
             gameId = (self.idCount - 1) // self.MAX_PLAYER
             if self.idCount % self.MAX_PLAYER == 1:
                 self.games[gameId] = Game(gameId)
                 print("Creating a new game...")
+
             else:
                 self.games[gameId].ready = True
                 p = 1
 
-            print("server: ini p pertama", p)
             start_new_thread(self.threaded_client, (conn, p, gameId))
 
 

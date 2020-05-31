@@ -21,11 +21,8 @@ class Game:
 
     def isReadyToPlay(self):
         for i in range(self.MAX_PLAYER):
-            print("game: PLAYER YG DICEK", self.players[i].readyToPlay)
             if self.players[i].readyToPlay == False:
-                print("game: FALSE")
                 return False
-        print("game: TRUEEEEE")
         return True
 
     def addPlayer(self, player_id, game_id):
@@ -56,6 +53,7 @@ class Game:
                 return True
 
     def coret(self, angka, player_id):
+        print('giliran: ', self.GILIRAN, 'player_id:', player_id )
         if self.GILIRAN != player_id:
             return
 
@@ -64,8 +62,7 @@ class Game:
             print(self.players[i])
             index = self.players[i].table.index(angka)
             self.players[i].tableCoret[index] = True
-            print('coret!!!')
             print(self.players[i].tableCoret)
 
-        (self.GILIRAN + 1) % self.MAX_PLAYER
+        self.GILIRAN = (self.GILIRAN + 1) % self.MAX_PLAYER
 
