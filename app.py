@@ -34,7 +34,7 @@ class App:
 
         self.texts_prepareplay = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)),
                                   Text("", 40, 625, 200, 60, 100, (0, 0, 0))]
-        self.texts_confirmprepareplay = [Text("Confirm", 40, 625, 250, 60, 100, (0, 0, 0))]
+        self.buttons_preparefinish = [Button("Confirm", 40, 625, 250, 60, 100, (0, 0, 0))]
         self.buttons_prepareplay = []
 
         for row in range(5):
@@ -183,8 +183,11 @@ class App:
                         if (self.count <= 25 and btn.text == ""):
                             btn.text = str(self.count)
                             self.count += 1
-                        self.GAME_STATE = self.STATE_PREPAREPLAY
-                        return
+                for btn in self.buttons_preparefinish:
+                    if btn.isClicked(click_pos):
+                        if (self.count > 25):
+
+
 
         # Gambar-gambar
         self.screen.fill((128, 128, 128))
@@ -200,8 +203,8 @@ class App:
             text.draw(self.screen)
 
         if (self.count > 25):
-            for text in self.texts_confirmprepareplay:
-                text.draw(self.screen)
+            for btn in self.buttons_preparefinish:
+                btn.draw(self.screen)
         pygame.display.update()
 
 
