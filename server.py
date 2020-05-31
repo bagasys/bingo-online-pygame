@@ -39,9 +39,10 @@ class Server:
                                     print('server: cannot add player')
                         elif data['type'] == "reset":
                             game.resetWent()
-                        elif data['type'] == "updateTable":
+                        elif data['type'] == "isiTable":
                             try:
-                                game.updatePlayer(p, data['payload'])
+                                table = data['payload']
+                                game.isiTable(p, table)
                                 print("server: berhasil isi table")
                                 print("server: p=", p)
                                 game.players[int(p)].imReady()
@@ -50,7 +51,8 @@ class Server:
                             if game.isReadyToPlay():
                                 game.startPlay()
                                 print("server: ready to play")
-                        
+                        elif data['type'] == "coret":
+                            game.coret(data['payload'])
                         try:
                             conn.sendall(pickle.dumps(game))
                         except:
@@ -86,6 +88,9 @@ class Server:
 
             print("server: ini p pertama", p)
             start_new_thread(self.threaded_client, (conn, p, gameId))
+
+
+
 
 if __name__ == '__main__':
     server = Server()

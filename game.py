@@ -38,9 +38,10 @@ class Game:
 
     def countPlayer(self):
         return len(self.players)
-        
-    def updatePlayer(self, player_id, player):
-        self.players[int(player_id)] = player
+
+    def isiTable(self, player_id, newTable):
+        self.players[int(player_id)].table = newTable
+        print(self.players[int(player_id)].table)
 
     def isWinner(self, id):
         for i in range (5):
@@ -53,8 +54,11 @@ class Game:
                 return True
 
     def coret(self, angka):
-        for player in self.players:
-            index = player.table.index(int(angka))
-            player.tableCoret[index] = True
+        print('luar coret')
+        for i in range(len(self.players)):
+            print(self.players[i])
+            index = self.players[i].table.index(3)
+            self.players[i].tableCoret[index] = True
+            print('coret!!!')
+            print(self.players[i].tableCoret)
 
-    

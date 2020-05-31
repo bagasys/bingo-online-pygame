@@ -2,9 +2,16 @@ import pygame
 from network import Network
 from button import Button
 from text import Text
+from cell import Cell
 
 class App:
     def __init__(self):
+        self.selectedNumber = None
+        self.table = []
+        for i in range(25):
+            self.table.append(0)
+
+        self.selectedCell = None
         pygame.init()
         self.count = 1
         self.RUNNING = True
@@ -40,15 +47,21 @@ class App:
 
         self.texts_prepareplay = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)),
                                   Text("", 40, 625, 200, 60, 100, (0, 0, 0))]
+
         self.buttons_preparefinish = [Button("Confirm", 40, 625, 250, 60, 100, (0, 0, 0))]
         self.buttons_prepareplay = []
+
+        self.texts_play = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)),]
+
+        self.button_send = Button("Send", 40, 625, 250, 60, 100, (0, 0, 0))
 
         for row in range(5):
             for column in range(5):
                 x = 100 + 80 * column + 5 * column
                 y = 100 + 80 * row + 5 * row
-                self.buttons_temp = Button("", 30, x, y, 80, 80, (0, 255, 0))
-                self.buttons_prepareplay.append(self.buttons_temp)
+                button_temp = Cell("", 30, x, y, 80, 80, (0, 255, 0))
+                button_temp.selected = False
+                self.buttons_prepareplay.append(button_temp)
 
     def start(self):
         while self.RUNNING:
@@ -122,13 +135,71 @@ class App:
             self.handlePlay()
 
     def handlePlay(self):
+        # Event Handling
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.RUNNING = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                click_pos = pygame.mouse.get_pos()
+                for btn in self.buttons_prepareplay:
+                    if btn.isClicked(click_pos):
+                        if(self.selectedCell != None):
+                            self.selectedCell.selected = False
+                        self.selectedNumber = int(btn.text)
+                        self.selectedCell = btn
+                        self.selectedCell.selected = True
+
+                if self.button_send.isClicked(click_pos):
+                    data = {}
+                    data['type'] = 'coret'
+                    data['payload'] = 3
+                    print('APP: lama:', self.player.tableCoret)
+                    self.game = self.net.send(data)
+                    # self.player = self.game.players[self.player.id]
+                    print('APP: lama:', self.player.tableCoret)
+                    # self.updateCell()
+                    if self.selectedCell != None:
+                        self.selectedCell.selected = False
+                        self.selectedCell = None
+
+
+        #Gambar gambar
         self.screen.fill((0, 0, 1))
-        waiting_text = "PLAY"
-        waiting_font = pygame.font.SysFont("comicsans", 80)
-        waiting_surface = waiting_font.render(waiting_text, 0, (255, 255, 255))
-        self.screen.blit(waiting_surface, (
-            self.width / 2 - waiting_surface.get_width() / 2, self.height / 2 - waiting_surface.get_height() / 2))
+
+        for button in self.buttons_prepareplay:
+            button.draw(self.screen)
+        self.button_send.draw(self.screen)
+        # for text in self.texts_prepareplay:
+        #     text.draw(self.screen)
+
+
+
+        selected_text = "Selected Number: {}".format(self.selectedNumber)
+        selected_font = pygame.font.SysFont("comicsans", 25)
+        selected_surface = selected_font.render(selected_text, 0, (255, 255, 255))
+        self.screen.blit(selected_surface, (600, 250))
+
+        player_text = "you are player X"
+        player_font = pygame.font.SysFont("comicsans", 18)
+        player_surface = player_font.render(player_text, 0, (255, 255, 255))
+        self.screen.blit(player_surface, (10, 10))
+
+        turn_text = "Player's Y Turn"
+        turn_font = pygame.font.SysFont("comicsans", 20)
+        turn_surface = turn_font.render(player_text, 0, (255, 255, 255))
+        self.screen.blit(turn_surface, (300, 10))
+
+        yourturn_text = "Player's Y Turn"
+        yourturn_font = pygame.font.SysFont("comicsans", 20)
+        yourturn_surface = yourturn_font.render(player_text, 0, (255, 255, 255))
+        self.screen.blit(yourturn_surface, (300, 30))
+
         pygame.display.update()
+
+    def updateCell(self):
+        for i in range(25):
+            if self.player.tableCoret[i]:
+                self.buttons_prepareplay[i].coret = True
 
     def handlePrepare(self):
         # Event Handling
@@ -141,15 +212,14 @@ class App:
                     if btn.isClicked(click_pos):
                         if (self.count <= 25 and btn.text == ""):
                             btn.text = str(self.count)
-                            self.player.tableCoret.append(self.count)
-                            self.player.table.append(False)
+                            self.table[self.buttons_prepareplay.index(btn)] = self.count
                             self.count += 1
                 for btn in self.buttons_preparefinish:
                     if btn.isClicked(click_pos):
                         if (self.count > 25):
                             data = {}
-                            data['type'] = 'updateTable'
-                            data['payload'] = self.player
+                            data['type'] = 'isiTable'
+                            data['payload'] = self.table
                             self.game = self.net.send(data)
                             print("app: ke click woy")
                             break

@@ -5,6 +5,7 @@ class Player:
         self.table = []
         self.tableCoret = []
         self.readyToPlay = False
+        self.selectedNumber = None
 
         for i in range(25):
             self.table.append(0)
