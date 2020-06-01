@@ -56,12 +56,12 @@ class App:
                               Text("", 40, 550, 0, 60, 100, (0, 0, 0)),
                               Text("", 40, 550, 0, 60, 100, (0, 0, 0)),
                               Text("", 40, 550, 0, 60, 100, (0, 0, 0))]
-        
+
         self.buttons_tabelwinplay = [Button("Lihat Tabel", 30, 625, 230, 125, 30, (0, 255, 0)),
-                                    Button("Lihat Tabel", 30, 625, 280, 125, 30, (0, 255, 0)),
-                                    Button("Lihat Tabel", 30, 625, 330, 125, 30, (0, 255, 0)),
-                                    Button("Lihat Tabel", 30, 625, 380, 125, 30, (0, 255, 0)),
-                                    Button("Lihat Tabel", 30, 625, 430, 125, 30, (0, 255, 0))]
+                                     Button("Lihat Tabel", 30, 625, 280, 125, 30, (0, 255, 0)),
+                                     Button("Lihat Tabel", 30, 625, 330, 125, 30, (0, 255, 0)),
+                                     Button("Lihat Tabel", 30, 625, 380, 125, 30, (0, 255, 0)),
+                                     Button("Lihat Tabel", 30, 625, 430, 125, 30, (0, 255, 0))]
 
         self.texts_winnername = [Text("", 40, 300, 10, 60, 100, (0, 0, 0)),]
 
@@ -82,6 +82,13 @@ class App:
         self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 450, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])]
         self.buttons_prepare = [ButtonImg('finish', 555, 330, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
         self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
+        self.buttons_winner = [
+            ButtonImg('view_winner', 555, 230, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 555, 290, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 555, 350, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 555, 370, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 555, 560, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+        ]
 
     def start(self):
         while self.RUNNING:
@@ -177,7 +184,7 @@ class App:
 
         elif self.game.STATE == self.game.STATE_FILL:
             self.handlePrepare()
-        
+
         elif self.game.STATE == self.game.STATE_PLAY:
             self.handlePlay()
 
@@ -189,23 +196,36 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()    
-                for btn in self.buttons_tabelwinplay:       
+            click_pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONUP:
+                for btn in self.buttons_winner:
                     if btn.isClicked(click_pos):
-                        if btn.text == "Lihat Tabel":         
-                            self.indeksTabel = indeks            
-                            return
-                    indeks += 1
+                        btn.onNormal()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                index_winner = 0
+                for btn in self.buttons_winner:
+                    if btn.isClicked(click_pos):
+                        btn.onClick()
+                        self.indeksTabel = index_winner
+                        break
+                    index_winner += 1
+            else:
+                for btn in self.buttons_winner:
+                    if btn.isClicked(click_pos):
+                        btn.onHover()
+                    else:
+                        btn.onNormal()
+
 
         self.screen.fill((128, 128, 128))
         # self.game.winners[self.indeksTabel]['tabel'].draw(self.screen)
         self.winnerTabel.tabel = self.game.winners[self.indeksTabel]['tabel']
         self.winnerTabel.tabelCoret = self.game.winners[self.indeksTabel]['tabelCoret']
         self.winnerTabel.draw(self.screen)
-            # self.game.winners[0]['tabel'].draw(self.screen)
+        # self.game.winners[0]['tabel'].draw(self.screen)
         count = 0
-        for btn in self.buttons_tabelwinplay:
+        for btn in self.buttons_winner:
             if(count < len(self.game.winners)):
                 btn.draw(self.screen)
             count += 1
@@ -213,10 +233,10 @@ class App:
         for i in range (len(self.game.winners)):
             self.texts_winplay[i + 1].text = str(self.game.winners[i]['id'])
             self.texts_winplay[i + 1].y = 150 + (i + 1) * 50
-     
+
         for text in self.texts_winplay:
             text.draw(self.screen)
-        
+
         for winner in self.texts_winnername:
             winner.text = "player " + str(self.game.winners[self.indeksTabel]['id']) + " table"
             winner.draw(self.screen)
