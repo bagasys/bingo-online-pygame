@@ -50,7 +50,12 @@ class Server:
                                 print("server: ready to play")
                         elif data['type'] == "coret":
                             game.coret(data['payload'], p)
-                            print('player:', p)
+                            print('player:', p)        
+                            if(game.cekWinner()):
+                                print("ada pemenang")
+                                game.winPlay()
+                                
+
                         try:
                             conn.sendall(pickle.dumps(game))
                         except:

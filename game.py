@@ -8,11 +8,13 @@ class Game:
 
         self.READY = False
         self.MAX_PLAYER = 2
+        self.winner = []
 
         self.STATE = 0
         self.STATE_WAIT = 0
         self.STATE_FILL = 1
         self.STATE_PLAY = 2
+        self.STATE_WIN = 3
 
         self.GILIRAN = 0
 
@@ -34,6 +36,9 @@ class Game:
 
     def startPlay(self):
         self.STATE = self.STATE_PLAY
+    
+    def winPlay(self):
+        self.STATE = self.STATE_WIN
 
     def countPlayer(self):
         return len(self.players)
@@ -42,15 +47,56 @@ class Game:
         self.players[int(player_id)].table = newTable
         print(self.players[int(player_id)].table)
 
-    def isWinner(self, id):
+    def isWinner(self, player_id):
+        # cek vertikal
         for i in range (5):
             win = 1
             for j in range (25):
-                if(j % 5 == i and self.players[int(id)].tableCoret[j] == False):
+                if(j % 5 == i and self.players[int(player_id)].tableCoret[j] == False):
                     win = 0
                     break
             if(win == 1):
+                print("ada vertikal")
                 return True
+        # cek horizontal
+        for i in range (5):
+            win = 1
+            for j in range (25):
+                if(j // 5 == i and self.players[int(player_id)].tableCoret[j] == False):
+                    win = 0
+                    break
+            if(win == 1):
+                print("ada horizontal")
+                return True
+        # cek diagonal ka
+        win = 1
+        for j in range (1, 21):
+            if(j % 4 == 0 and self.players[int(player_id)].tableCoret[j] == False):
+                win = 0
+                break
+        if(win == 1):
+            print("ada diagonal ka")
+            return True
+
+        # cek diagonal kb
+        win = 1
+        for j in range (25):
+            if(j % 6 == 0 and self.players[int(player_id)].tableCoret[j] == False):
+                win = 0
+                break
+        if(win == 1):
+            print("ada diagonal kb")
+            return True
+        else:
+            return False
+    
+    def cekWinner(self):
+        kondisi = False
+        for i in range(len(self.players)):
+            if(self.isWinner(i)):
+                self.winner.append(i)
+                kondisi = True
+        return kondisi
 
     def coret(self, angka, player_id):
         print('giliran: ', self.GILIRAN, 'player_id:', player_id )

@@ -49,6 +49,10 @@ class App:
 
         self.texts_play = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)),]
 
+        self.texts_winplay = [Text("Winner", 40, 300, 150, 60, 100, (0, 0, 0)),
+                              Text("", 40, 300, 200, 60, 100, (0, 0, 0)),
+                              Text("", 40, 300, 250, 60, 100, (0, 0, 0))]
+
         self.button_send = Button("Send", 40, 625, 250, 60, 100, (0, 0, 0))
 
     def start(self):
@@ -121,6 +125,26 @@ class App:
         
         elif self.game.STATE == self.game.STATE_PLAY:
             self.handlePlay()
+
+        elif self.game.STATE == self.game.STATE_WIN:
+            self.handleWin()
+
+    def handleWin(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.RUNNING = False
+
+        self.screen.fill((128, 128, 128))
+
+        temp = Text("", 40, 300, 0, 60, 100, (0, 0, 0))
+
+        for i in range (len(self.game.winner)):
+            self.texts_winplay[i + 1].text = str(self.game.winner[i])
+            self.texts_winplay[i + 1].y = 150 + (i + 1) * 75
+        
+        for text in self.texts_winplay:
+            text.draw(self.screen)
+        pygame.display.update()
 
     def handlePlay(self):
         # Event Handling
@@ -204,6 +228,10 @@ class App:
         self.screen.fill((128, 128, 128))
         self.tabel.draw(self.screen)
 
+        displayNumber = self.tabel.count_isi + 1
+        if(displayNumber > 25):
+            displayNumber = "-"
+        self.texts_prepareplay[1].text = str(displayNumber)
         for text in self.texts_prepareplay:
             text.draw(self.screen)
 
