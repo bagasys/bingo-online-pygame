@@ -17,7 +17,7 @@ class App:
         self.CAPTION = "BINGO!"
         self.SCREEN_RESOLUTION = (self.width, self.height)
         self.frame_count = 0
-
+        self.halaman_howtoplay = 0
         self.screen = pygame.display.set_mode(self.SCREEN_RESOLUTION)
         self.update_count = 0
 
@@ -69,6 +69,7 @@ class App:
         self.button_send = Button("Send", 40, 625, 250, 60, 100, (0, 0, 0))
 
         self.background = pygame.image.load('background.png')
+        self.background_howtoplay = [pygame.image.load('How to Play 1.png'), pygame.image.load('How to Play 2.png'), pygame.image.load('How to Play 3.png')]
         self.background_mainmenu = pygame.image.load('main_menu.png')
         self.background_wait = pygame.image.load('wait_screen.png')
         btn_join = ButtonImg('join' ,0, 0, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png'])
@@ -76,9 +77,9 @@ class App:
         btn_finish = ButtonImg('finish', 0, 0, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])
         btn_confirm = ButtonImg('confirm',0, 0, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png'])
         btn_backtomenu = ButtonImg('back_to_menu', 0, 0, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
-        self.buttons_welcome = [ButtonImg('join' ,300, 300, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 350, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
-        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 450, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])]
-        self.buttons_prepare = [ButtonImg('finish', 555, 400, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
+        self.buttons_welcome = [ButtonImg('join' ,300, 320, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 395, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
+        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 500, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png']), ButtonImg('kanan', 670, 500, ['Panah netral.png', 'Panah hover.png', 'Panah clicked.png']), ButtonImg('kiri', 570, 500, ['Panah2 netral.png', 'Panah2 hover.png', 'Panah2 clicked.png'])]
+        self.buttons_prepare = [ButtonImg('finish', 555, 330, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
         self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
         self.buttons_winner = [
             ButtonImg('view_winner', 555, 230, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
@@ -87,6 +88,8 @@ class App:
             ButtonImg('view_winner', 555, 370, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
             ButtonImg('view_winner', 555, 560, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
         ]
+
+
 
         self.button_reset = ButtonImg('reset', 333, 550, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
 
@@ -156,6 +159,12 @@ class App:
                         btn.onNormal()
                         if btn.name == "back_to_menu":
                             self.DISPLAY = self.DISPLAY_WELCOME
+                        if btn.name == "kiri":
+                            if (self.halaman_howtoplay > 0):
+                                self.halaman_howtoplay -= 1
+                        if btn.name == "kanan":
+                            if (self.halaman_howtoplay < 2):
+                                self.halaman_howtoplay += 1
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for btn in self.buttons_howtoplay:
@@ -169,9 +178,15 @@ class App:
                         btn.onNormal()
 
         # Gambar-gambar
-        self.screen.blit(self.background, (0, 0))
+        self.screen.blit(self.background_howtoplay[self.halaman_howtoplay], (0, 0))
         for btn in self.buttons_howtoplay:
-            btn.draw(self.screen)
+            if self.halaman_howtoplay == 0 and btn.name == 'kiri':
+                continue
+            elif self.halaman_howtoplay == 2 and btn.name == 'kanan':
+                continue
+
+            else:
+                btn.draw(self.screen)
 
         pygame.display.update()
 
@@ -300,23 +315,23 @@ class App:
         # for text in self.texts_prepareplay:
         #     text.draw(self.screen)
 
-        selected_text = "Selected Number: {}".format(self.selectedNumber)
-        selected_font = pygame.font.SysFont("comicsans", 25)
-        selected_surface = selected_font.render(selected_text, 0, (255, 255, 255))
-        self.screen.blit(selected_surface, (600, 250))
+        selected_text = "Selected Number: {}".format(self.tabel.angkaTerpilih)
+        selected_font = pygame.font.SysFont("comicsans", 30)
+        selected_surface = selected_font.render(selected_text, 0, (94, 100, 114))
+        self.screen.blit(selected_surface, (550, 250))
 
-        player_text = "you are player {}".format(self.player.id)
-        player_font = pygame.font.SysFont("comicsans", 18)
-        player_surface = player_font.render(player_text, 0, (255, 255, 255))
+        player_text = "You are player {}".format(self.player.id + 1)
+        player_font = pygame.font.SysFont("comicsans", 35)
+        player_surface = player_font.render(player_text, 0, (94, 100, 114))
         self.screen.blit(player_surface, (10, 10))
 
-        if self.player.id == self.game.GILIRAN:
+        if (self.player.id + 1) == (self.game.GILIRAN + 1):
             turn_text = "Your Turn!"
         else:
-            turn_text = "Player's {} Turn".format(self.game.GILIRAN)
+            turn_text = "Player's {} Turn".format(self.game.GILIRAN + 1)
 
-        turn_font = pygame.font.SysFont("comicsans", 20)
-        turn_surface = turn_font.render(turn_text, 0, (255, 255, 255))
+        turn_font = pygame.font.SysFont("comicsans", 35)
+        turn_surface = turn_font.render(turn_text, 0, (94, 100, 114))
         self.screen.blit(turn_surface, (300, 10))
 
         pygame.display.update()
@@ -413,6 +428,8 @@ class App:
             self.screen.blit(waiting_surface, (
                 self.width / 2 - waiting_surface.get_width() / 2, self.height / 2 - waiting_surface.get_height() / 2))
             pygame.display.update()
+
+
 
     def updateGameData(self):
         if not self.net:
