@@ -240,7 +240,7 @@ class App:
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 idx_clicked = self.tabel.checkClick(click_pos)
-                print(idx_clicked)
+                # print(idx_clicked)
                 if idx_clicked != -1:
                     self.tabel.pilihKotak(idx_clicked)
 
@@ -305,13 +305,13 @@ class App:
                                 data = {}
                                 data['type'] = 'isiTable'
                                 data['payload'] = self.tabel.tabel
-                                print('payload:', data['payload'])
+                                # print('payload:', data['payload'])
                                 self.game = self.net.send(data)
                                 break
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 idx_clicked = self.tabel.checkClick(click_pos)
-                print(idx_clicked)
+                # print(idx_clicked)
                 if idx_clicked != -1:
                     self.tabel.isiTabel(idx_clicked)
 
@@ -377,8 +377,8 @@ class App:
                 self.game = self.net.send(data)
                 self.player = self.game.players[int(self.net.id)]
                 self.tabel.tabelCoret = self.player.tableCoret
-                print('tabel coret terbaru:')
-                print(self.player.tableCoret)
+                # print('tabel coret terbaru:')
+                # print(self.player.tableCoret)
             self.frame_count = ( self.frame_count + 1 ) % 30
             return True
 

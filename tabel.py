@@ -49,7 +49,7 @@ class Tabel:
         if self.count_isi < 25 and self.tabel[idx] == None:
             self.count_isi += 1
             self.tabel[idx] = self.count_isi
-            print(self.tabel)
+            # print(self.tabel)
 
     def checkClick(self, titik_klik):
         idx = 0
