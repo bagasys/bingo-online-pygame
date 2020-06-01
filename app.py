@@ -295,20 +295,19 @@ class App:
         selected_surface = selected_font.render(selected_text, 0, (255, 255, 255))
         self.screen.blit(selected_surface, (600, 250))
 
-        player_text = "you are player X"
+        player_text = "you are player {}".format(self.player.id)
         player_font = pygame.font.SysFont("comicsans", 18)
         player_surface = player_font.render(player_text, 0, (255, 255, 255))
         self.screen.blit(player_surface, (10, 10))
 
-        turn_text = "Player's Y Turn"
-        turn_font = pygame.font.SysFont("comicsans", 20)
-        turn_surface = turn_font.render(player_text, 0, (255, 255, 255))
-        self.screen.blit(turn_surface, (300, 10))
+        if self.player.id == self.game.GILIRAN:
+            turn_text = "Your Turn!"
+        else:
+            turn_text = "Player's {} Turn".format(self.game.GILIRAN)
 
-        yourturn_text = "Player's Y Turn"
-        yourturn_font = pygame.font.SysFont("comicsans", 20)
-        yourturn_surface = yourturn_font.render(player_text, 0, (255, 255, 255))
-        self.screen.blit(yourturn_surface, (300, 30))
+        turn_font = pygame.font.SysFont("comicsans", 20)
+        turn_surface = turn_font.render(turn_text, 0, (255, 255, 255))
+        self.screen.blit(turn_surface, (300, 10))
 
         pygame.display.update()
 
