@@ -2,13 +2,14 @@ import pygame
 from network import Network
 from button import Button
 from text import Text
-from cell import Cell
-from tabel import Tabel
-
+from tableBergambar import TabelBergambar
+from buttonImg import ButtonImg
 class App:
     def __init__(self):
+
+
         self.selectedNumber = None
-        self.tabel = Tabel()
+        self.tabel = TabelBergambar()
 
         pygame.init()
         self.RUNNING = True
@@ -35,9 +36,7 @@ class App:
         self.indeksTabel = 0
 
         self.texts_welcome = [Text("BINGO!", 80, 350, 50, 60, 100, (0, 0, 0)), ]
-        self.buttons_welcome = [Button("Join Game", 30, 300, 250, 120, 60, (0, 255, 0)),
-                                Button("How To Play", 30, 300, 320, 130, 60, (0, 255, 255)),
-                                Button("Prepare Play", 30, 300, 390, 130, 60, (0, 255, 255))]
+
 
         self.texts_play = [Text("PLAY", 80, 350, 50, 60, 100, (0, 0, 0)), ]
         self.texts_howtoplay = [Text("HOW TO PLAY", 80, 350, 50, 60, 100, (0, 0, 0)), ]
@@ -70,6 +69,19 @@ class App:
 
         self.button_send = Button("Send", 40, 625, 250, 60, 100, (0, 0, 0))
 
+        self.background = pygame.image.load('background.png')
+        self.background_mainmenu = pygame.image.load('main_menu.png')
+        self.background_wait = pygame.image.load('wait_screen.png')
+        btn_join = ButtonImg('join' ,0, 0, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png'])
+        btn_howtoplay = ButtonImg('how_to_play' ,0, 0, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])
+        btn_finish = ButtonImg('finish', 0, 0, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])
+        btn_confirm = ButtonImg('confirm',0, 0, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png'])
+        btn_backtomenu = ButtonImg('back_to_menu', 0, 0, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
+        self.buttons_welcome = [ButtonImg('join' ,300, 300, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 350, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
+        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 450, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])]
+        self.buttons_prepare = [ButtonImg('finish', 555, 330, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
+        self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
+
     def start(self):
         while self.RUNNING:
             self.clock.tick(10)
@@ -84,27 +96,43 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()
+
+            click_pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONUP:
                 for btn in self.buttons_welcome:
                     if btn.isClicked(click_pos):
-                        if btn.text == "Join Game":
+                        btn.onNormal()
+                        if btn.name == "join":
                             self.DISPLAY = self.DISPLAY_PLAY
-                            return
-                        elif btn.text == "How To Play":
+                        elif btn.name == "how_to_play":
                             self.DISPLAY = self.DISPLAY_HOWTOPLAY
-                            return
-                        elif btn.text == "Prepare Play":
-                            self.DISPLAY = self.DISPLAY_PREPARE
-                            return
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for btn in self.buttons_welcome:
+                    if btn.isClicked(click_pos):
+                        btn.onClick()
+                        if btn.name == "join":
+                            pass
+                        elif btn.name == "how_to_play":
+                            print('Click down HTP')
+
+            else:
+                for btn in self.buttons_welcome:
+                    if btn.isClicked(click_pos):
+                        btn.onHover()
+                        if btn.name == "join":
+                            print('Click up Join')
+                        elif btn.name == "how_to_play":
+                            print('Click up HTP')
+                    else:
+                        btn.onNormal()
+
+
 
         # Gambar-gambar
-        self.screen.fill((128, 128, 128))
-        for button in self.buttons_welcome:
-            button.draw(self.screen)
-
-        for text in self.texts_welcome:
-            text.draw(self.screen)
+        self.screen.blit(self.background_mainmenu, (0, 0))
+        for btn in self.buttons_welcome:
+            btn.draw(self.screen)
 
         pygame.display.update()
 
@@ -112,20 +140,31 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()
+
+            click_pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONUP:
                 for btn in self.buttons_howtoplay:
                     if btn.isClicked(click_pos):
-                        if btn.text == "Home":
+                        btn.onNormal()
+                        if btn.name == "back_to_menu":
                             self.DISPLAY = self.DISPLAY_WELCOME
-                            return
-        # Gambar-gambar
-        self.screen.fill((128, 128, 128))
-        for button in self.buttons_howtoplay:
-            button.draw(self.screen)
 
-        for text in self.texts_howtoplay:
-            text.draw(self.screen)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for btn in self.buttons_howtoplay:
+                    if btn.isClicked(click_pos):
+                        btn.onClick()
+            else:
+                for btn in self.buttons_howtoplay:
+                    if btn.isClicked(click_pos):
+                        btn.onHover()
+                    else:
+                        btn.onNormal()
+
+        # Gambar-gambar
+        self.screen.blit(self.background, (0, 0))
+        for btn in self.buttons_howtoplay:
+            btn.draw(self.screen)
+
         pygame.display.update()
 
     def onPlay(self):
@@ -185,34 +224,47 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    click_pos = pygame.mouse.get_pos()
-                    idx_clicked = self.tabel.checkClick(click_pos)
-                    print(idx_clicked)
-                    if idx_clicked != -1:
-                        self.tabel.pilihKotak(idx_clicked)
 
-                if self.button_send.isClicked(click_pos) and self.tabel.angkaTerpilih != None:
-                    data = {}
-                    data['type'] = 'coret'
-                    data['payload'] = self.tabel.angkaTerpilih
-                    self.game = self.net.send(data)
-                    self.player = self.game.players[self.net.id]
-                    self.tabel.tabelCoret = self.player.tableCoret
+            click_pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONUP:
+                for btn in self.buttons_play:
+                    if btn.isClicked(click_pos):
+                        btn.onNormal()
+                        if btn.name == "confirm" and self.tabel.angkaTerpilih != None:
+                            data = {}
+                            data['type'] = 'coret'
+                            data['payload'] = self.tabel.angkaTerpilih
+                            self.game = self.net.send(data)
+                            self.player = self.game.players[self.net.id]
+                            self.tabel.tabelCoret = self.player.tableCoret
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                idx_clicked = self.tabel.checkClick(click_pos)
+                print(idx_clicked)
+                if idx_clicked != -1:
+                    self.tabel.pilihKotak(idx_clicked)
+
+                for btn in self.buttons_play:
+                    if btn.isClicked(click_pos):
+                        btn.onClick()
+            else:
+                for btn in self.buttons_howtoplay:
+                    if btn.isClicked(click_pos):
+                        btn.onHover()
+                    else:
+                        btn.onNormal()
 
 
         #Gambar gambar
-        self.screen.fill((0, 0, 1))
+        self.screen.blit(self.background, (0, 0))
 
         self.tabel.draw(self.screen)
 
-        self.button_send.draw(self.screen)
+        for btn in self.buttons_play:
+            btn.draw(self.screen)
+
         # for text in self.texts_prepareplay:
         #     text.draw(self.screen)
-
-
 
         selected_text = "Selected Number: {}".format(self.selectedNumber)
         selected_font = pygame.font.SysFont("comicsans", 25)
@@ -241,39 +293,45 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()
+
+            click_pos = pygame.mouse.get_pos()
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                for btn in self.buttons_prepare:
+                    if btn.isClicked(click_pos):
+                        btn.onNormal()
+                        if btn.name == 'finish':
+                            if (self.tabel.count_isi > 24):
+                                data = {}
+                                data['type'] = 'isiTable'
+                                data['payload'] = self.tabel.tabel
+                                print('payload:', data['payload'])
+                                self.game = self.net.send(data)
+                                break
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 idx_clicked = self.tabel.checkClick(click_pos)
                 print(idx_clicked)
                 if idx_clicked != -1:
                     self.tabel.isiTabel(idx_clicked)
 
-                for btn in self.buttons_preparefinish:
+                for btn in self.buttons_prepare:
                     if btn.isClicked(click_pos):
-                        if (self.tabel.count_isi > 24):
-                            data = {}
-                            data['type'] = 'isiTable'
-                            data['payload'] = self.tabel.tabel
-                            print('payload:', data['payload'])
-                            self.game = self.net.send(data)
-                            break
+                        btn.onClick()
+            else:
+                for btn in self.buttons_prepare:
+                    if btn.isClicked(click_pos):
+                        btn.onHover()
+                    else:
+                        btn.onNormal()
 
         # Gambar-gambar
-        self.screen.fill((128, 128, 128))
+        self.screen.blit(self.background, (0, 0))
         self.tabel.draw(self.screen)
-
-        displayNumber = self.tabel.count_isi + 1
-        if(displayNumber > 25):
-            displayNumber = "-"
-        self.texts_prepareplay[1].text = str(displayNumber)
-        for text in self.texts_prepareplay:
-            text.draw(self.screen)
-
         if (self.tabel.count_isi > 24):
-            for btn in self.buttons_preparefinish:
+            for btn in self.buttons_prepare:
                 btn.draw(self.screen)
         pygame.display.update()
-
 
     def handleWait(self):
         if self.game.STATE == self.game.STATE_WAIT:
@@ -282,7 +340,7 @@ class App:
                     self.RUNNING = False
 
             # Gambar-gambar
-            self.screen.fill((128, 128, 128))
+            self.screen.blit(self.background_wait, (0, 0))
             # TO DO: Check if Waiting.
             # count_player = 2
             count_player = self.game.countPlayer()
