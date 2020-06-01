@@ -141,15 +141,24 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()
-                
-                for btn in self.buttons_winplay:
-                    if btn.isClicked(click_pos):
-                        if btn.text == "Lihat Tabel":
-                            indeks += 1
-                            self.indeksTabel = indeks
-                            return  
+
+        self.screen.fill((128, 128, 128))
+        self.game.winners[0]['tabel'].draw(self.screen)
+        pygame.display.update()
+
+
+
+
+
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+            #     click_pos = pygame.mouse.get_pos()
+            #
+            #     for btn in self.buttons_winplay:
+            #         if btn.isClicked(click_pos):
+            #             if btn.text == "Lihat Tabel":
+            #                 indeks += 1
+            #                 self.indeksTabel = indeks
+            #                 return
                     
 
                 # for btn in self.buttons_winplay:
@@ -162,26 +171,26 @@ class App:
                 #             self.net = None          
                 #             return
 
-        self.screen.fill((128, 128, 128))
-        if(indeks != -1):
-            self.game.winnertable[indeks].draw(self.screen)
-        # self.players[self.game.winner[self.indeksTabel]].tabel.draw(self.screen)
-        count = 0
-        for btn in self.buttons_tabelwinplay:
-            count += 1
-            btn.draw(self.screen)
-            if(count == len(self.game.winner)):
-                break
+        # self.screen.fill((128, 128, 128))
+        # if(indeks != -1):
+        #     self.game.winnertable[indeks].draw(self.screen)
+        # # self.players[self.game.winner[self.indeksTabel]].tabel.draw(self.screen)
+        # count = 0
+        # for btn in self.buttons_tabelwinplay:
+        #     count += 1
+        #     btn.draw(self.screen)
+        #     if(count == len(self.game.winner)):
+        #         break
 
-        for i in range (len(self.game.winner)):
-            self.texts_winplay[i + 1].text = str(self.game.winner[i])
-            self.texts_winplay[i + 1].y = 150 + (i + 1) * 50
+        # for i in range (len(self.game.winner)):
+        #     self.texts_winplay[i + 1].text = 'a'
+        #     self.texts_winplay[i + 1].y = 150 + (i + 1) * 50
 
             
         
-        for text in self.texts_winplay:
-            text.draw(self.screen)
-        pygame.display.update()
+        # for text in self.texts_winplay:
+        #     text.draw(self.screen)
+        # pygame.display.update()
 
     def handlePlay(self):
         # Event Handling

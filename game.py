@@ -1,5 +1,5 @@
 from player import Player
-
+from tabel import Tabel
 class Game:
     def __init__(self, id):
         self.players = []
@@ -8,7 +8,7 @@ class Game:
 
         self.READY = False
         self.MAX_PLAYER = 2
-        self.winner = []
+        self.winners = []
         self.winnertable = []
 
         self.STATE = 0
@@ -95,8 +95,15 @@ class Game:
         kondisi = False
         for i in range(len(self.players)):
             if(self.isWinner(i)):
-                self.winner.append(i)
-                self.winnertable.append(self.players[i].table)
+                winner = {}
+                newTable = Tabel()
+                newTable.tabel = self.players[i].table
+                newTable.tabelCoret = self.players[i].tableCoret
+                self.players[i].tableCoret
+                winner['tabel'] = newTable
+                winner['id'] = i
+
+                self.winners.append(winner)
                 kondisi = True
         return kondisi
 
