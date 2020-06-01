@@ -78,7 +78,7 @@ class App:
         btn_backtomenu = ButtonImg('back_to_menu', 0, 0, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
         self.buttons_welcome = [ButtonImg('join' ,300, 300, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 350, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
         self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 450, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])]
-        self.buttons_prepare = [ButtonImg('finish', 555, 330, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
+        self.buttons_prepare = [ButtonImg('finish', 555, 400, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
         self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
         self.buttons_winner = [
             ButtonImg('view_winner', 555, 230, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
@@ -363,7 +363,33 @@ class App:
 
         # Gambar-gambar
         self.screen.blit(self.background, (0, 0))
+        
         self.tabel.draw(self.screen)
+        
+        numberDisplay = self.tabel.count_isi + 1
+        if(numberDisplay > 25):
+            numberDisplay = "-"
+
+        selected_text = "You Are Player {}".format(self.player.id + 1)
+        selected_font = pygame.font.SysFont("comicsans", 50)
+        selected_surface = selected_font.render(selected_text, 0, (94, 100, 114))
+        self.screen.blit(selected_surface, (275, 25))
+
+        selected_text = "Click the cell "
+        selected_font = pygame.font.SysFont("comicsans", 30)
+        selected_surface = selected_font.render(selected_text, 0, (94, 100, 114))
+        self.screen.blit(selected_surface, (585, 250))
+
+        selected_text = "to fill in the number"
+        selected_font = pygame.font.SysFont("comicsans", 30)
+        selected_surface = selected_font.render(selected_text, 0, (94, 100, 114))
+        self.screen.blit(selected_surface, (550, 300))
+        
+        selected_text = "{}".format(numberDisplay)
+        selected_font = pygame.font.SysFont("comicsans", 30)
+        selected_surface = selected_font.render(selected_text, 0, (94, 100, 114))
+        self.screen.blit(selected_surface, (650, 350))
+
         if (self.tabel.count_isi > 24):
             for btn in self.buttons_prepare:
                 btn.draw(self.screen)
