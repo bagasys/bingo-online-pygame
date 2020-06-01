@@ -2,15 +2,14 @@ import pygame
 from network import Network
 from button import Button
 from text import Text
-from cell import Cell
-from tabel import Tabel
+from tableBergambar import TabelBergambar
 from buttonImg import ButtonImg
 class App:
     def __init__(self):
 
 
         self.selectedNumber = None
-        self.tabel = Tabel()
+        self.tabel = TabelBergambar()
 
         pygame.init()
         self.RUNNING = True
@@ -72,6 +71,8 @@ class App:
         btn_backtomenu = ButtonImg('back_to_menu', 0, 0, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
         self.buttons_welcome = [ButtonImg('join' ,300, 300, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 350, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
         self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 450, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])]
+        self.buttons_prepare = [ButtonImg('finish', 555, 330, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
+        self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
 
     def start(self):
         while self.RUNNING:
@@ -185,84 +186,52 @@ class App:
         pygame.display.update()
 
 
-
-
-
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-            #     click_pos = pygame.mouse.get_pos()
-            #
-            #     for btn in self.buttons_winplay:
-            #         if btn.isClicked(click_pos):
-            #             if btn.text == "Lihat Tabel":
-            #                 indeks += 1
-            #                 self.indeksTabel = indeks
-            #                 return
-                    
-
-                # for btn in self.buttons_winplay:
-                #     if btn.isClicked(click_pos):
-                #         if btn.text == "Play Again":
-                #             self.game.STATE == self.game.STATE_WAIT
-                #             return
-                #         elif btn.text == "Back to Home":
-                #             self.DISPLAY = self.DISPLAY_WELCOME
-                #             self.net = None          
-                #             return
-
-        # self.screen.fill((128, 128, 128))
-        # if(indeks != -1):
-        #     self.game.winnertable[indeks].draw(self.screen)
-        # # self.players[self.game.winner[self.indeksTabel]].tabel.draw(self.screen)
-        # count = 0
-        # for btn in self.buttons_tabelwinplay:
-        #     count += 1
-        #     btn.draw(self.screen)
-        #     if(count == len(self.game.winner)):
-        #         break
-
-        # for i in range (len(self.game.winner)):
-        #     self.texts_winplay[i + 1].text = 'a'
-        #     self.texts_winplay[i + 1].y = 150 + (i + 1) * 50
-
-            
-        
-        # for text in self.texts_winplay:
-        #     text.draw(self.screen)
-        # pygame.display.update()
-
     def handlePlay(self):
         # Event Handling
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    click_pos = pygame.mouse.get_pos()
-                    idx_clicked = self.tabel.checkClick(click_pos)
-                    print(idx_clicked)
-                    if idx_clicked != -1:
-                        self.tabel.pilihKotak(idx_clicked)
 
-                if self.button_send.isClicked(click_pos) and self.tabel.angkaTerpilih != None:
-                    data = {}
-                    data['type'] = 'coret'
-                    data['payload'] = self.tabel.angkaTerpilih
-                    self.game = self.net.send(data)
-                    self.player = self.game.players[self.net.id]
-                    self.tabel.tabelCoret = self.player.tableCoret
+            click_pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONUP:
+                for btn in self.buttons_play:
+                    if btn.isClicked(click_pos):
+                        btn.onNormal()
+                        if btn.name == "confirm" and self.tabel.angkaTerpilih != None:
+                            data = {}
+                            data['type'] = 'coret'
+                            data['payload'] = self.tabel.angkaTerpilih
+                            self.game = self.net.send(data)
+                            self.player = self.game.players[self.net.id]
+                            self.tabel.tabelCoret = self.player.tableCoret
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                idx_clicked = self.tabel.checkClick(click_pos)
+                print(idx_clicked)
+                if idx_clicked != -1:
+                    self.tabel.pilihKotak(idx_clicked)
+
+                for btn in self.buttons_play:
+                    if btn.isClicked(click_pos):
+                        btn.onClick()
+            else:
+                for btn in self.buttons_howtoplay:
+                    if btn.isClicked(click_pos):
+                        btn.onHover()
+                    else:
+                        btn.onNormal()
 
 
         #Gambar gambar
-        self.screen.fill((0, 0, 1))
+        self.screen.blit(self.background, (0, 0))
 
         self.tabel.draw(self.screen)
 
-        self.button_send.draw(self.screen)
+        for btn in self.buttons_play:
+            btn.draw(self.screen)
+
         # for text in self.texts_prepareplay:
         #     text.draw(self.screen)
-
-
 
         selected_text = "Selected Number: {}".format(self.selectedNumber)
         selected_font = pygame.font.SysFont("comicsans", 25)
@@ -291,39 +260,45 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click_pos = pygame.mouse.get_pos()
+
+            click_pos = pygame.mouse.get_pos()
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                for btn in self.buttons_prepare:
+                    if btn.isClicked(click_pos):
+                        btn.onNormal()
+                        if btn.name == 'finish':
+                            if (self.tabel.count_isi > 24):
+                                data = {}
+                                data['type'] = 'isiTable'
+                                data['payload'] = self.tabel.tabel
+                                print('payload:', data['payload'])
+                                self.game = self.net.send(data)
+                                break
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 idx_clicked = self.tabel.checkClick(click_pos)
                 print(idx_clicked)
                 if idx_clicked != -1:
                     self.tabel.isiTabel(idx_clicked)
 
-                for btn in self.buttons_preparefinish:
+                for btn in self.buttons_prepare:
                     if btn.isClicked(click_pos):
-                        if (self.tabel.count_isi > 24):
-                            data = {}
-                            data['type'] = 'isiTable'
-                            data['payload'] = self.tabel.tabel
-                            print('payload:', data['payload'])
-                            self.game = self.net.send(data)
-                            break
+                        btn.onClick()
+            else:
+                for btn in self.buttons_prepare:
+                    if btn.isClicked(click_pos):
+                        btn.onHover()
+                    else:
+                        btn.onNormal()
 
         # Gambar-gambar
         self.screen.blit(self.background, (0, 0))
         self.tabel.draw(self.screen)
-
-        displayNumber = self.tabel.count_isi + 1
-        if(displayNumber > 25):
-            displayNumber = "-"
-        self.texts_prepareplay[1].text = str(displayNumber)
-        for text in self.texts_prepareplay:
-            text.draw(self.screen)
-
         if (self.tabel.count_isi > 24):
-            for btn in self.buttons_preparefinish:
+            for btn in self.buttons_prepare:
                 btn.draw(self.screen)
         pygame.display.update()
-
 
     def handleWait(self):
         if self.game.STATE == self.game.STATE_WAIT:
