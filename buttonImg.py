@@ -26,10 +26,10 @@ class ButtonImg:
         y1 = pos[1]
         if self.x <= x1 <= self.x + self.width and self.y <= y1 <= self.y + self.height:
             self.STATE = self.STATE_CLICKED
-            print('TRUE')
+            # print('TRUE')
             return True
         else:
-            print('FALSE')
+            # print('FALSE')
             self.STATE = self.STATE_NORMAL
             return False
 

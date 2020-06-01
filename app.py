@@ -3,6 +3,7 @@ from network import Network
 from button import Button
 from text import Text
 from tableBergambar import TabelBergambar
+from tabel import Tabel
 from buttonImg import ButtonImg
 class App:
     def __init__(self):
@@ -10,7 +11,7 @@ class App:
 
         self.selectedNumber = None
         self.tabel = TabelBergambar()
-
+        self.winnerTabel = TabelBergambar()
         pygame.init()
         self.RUNNING = True
         self.width = 800
@@ -198,7 +199,10 @@ class App:
                     indeks += 1
 
         self.screen.fill((128, 128, 128))
-        self.game.winners[self.indeksTabel]['tabel'].draw(self.screen)
+        # self.game.winners[self.indeksTabel]['tabel'].draw(self.screen)
+        self.winnerTabel.tabel = self.game.winners[self.indeksTabel]['tabel']
+        self.winnerTabel.tabelCoret = self.game.winners[self.indeksTabel]['tabelCoret']
+        self.winnerTabel.draw(self.screen)
             # self.game.winners[0]['tabel'].draw(self.screen)
         count = 0
         for btn in self.buttons_tabelwinplay:
@@ -379,7 +383,7 @@ class App:
                 self.tabel.tabelCoret = self.player.tableCoret
                 # print('tabel coret terbaru:')
                 # print(self.player.tableCoret)
-            self.frame_count = ( self.frame_count + 1 ) % 30
+            self.frame_count = (self.frame_count + 1) % 30
             return True
 
 if __name__ == "__main__":

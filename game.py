@@ -1,5 +1,6 @@
 from player import Player
 from tableBergambar import TabelBergambar
+from tabel import Tabel
 class Game:
     def __init__(self, id):
         self.players = []
@@ -96,13 +97,13 @@ class Game:
         for i in range(len(self.players)):
             if(self.isWinner(i)):
                 winner = {}
-                newTable = TabelBergambar()
-                newTable.tabel = self.players[i].table
-                newTable.tabelCoret = self.players[i].tableCoret
-                self.players[i].tableCoret
-                winner['tabel'] = newTable
+                # newTable = Tabel()
+                # newTable.tabel = self.players[i].table
+                # newTable.tabelCoret = self.players[i].tableCoret
+                # self.players[i].tableCoret
+                winner['tabel'] = self.players[i].table
+                winner['tabelCoret'] = self.players[i].tableCoret
                 winner['id'] = i
-
                 self.winners.append(winner)
                 kondisi = True
         return kondisi
@@ -114,9 +115,9 @@ class Game:
 
         print('luar coret')
         for i in range(len(self.players)):
-            print(self.players[i])
+            # print(self.players[i])
             index = self.players[i].table.index(angka)
             self.players[i].tableCoret[index] = True
-            print(self.players[i].tableCoret)
+            # print(self.players[i].tableCoret)
 
         self.GILIRAN = (self.GILIRAN + 1) % self.MAX_PLAYER
