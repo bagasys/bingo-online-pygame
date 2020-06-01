@@ -5,6 +5,7 @@ class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server = "localhost"
+        # self.server = "157.245.50.224"
         self.port = 5555
         self.addr = (self.server, self.port)
         try:
@@ -22,6 +23,6 @@ class Network:
     def send(self, data):
         try:
             self.client.sendall(pickle.dumps(data))
-            return pickle.loads(self.client.recv(2048*3))
+            return pickle.loads(self.client.recv(2048*5))
         except socket.error as e:
             print(e)

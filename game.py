@@ -7,7 +7,7 @@ class Game:
         self.current_number = 0
 
         self.READY = False
-        self.MAX_PLAYER = 2
+        self.MAX_PLAYER = 5
         self.winners = []
         self.winnertable = []
 
@@ -120,4 +120,3 @@ class Game:
             print(self.players[i].tableCoret)
 
         self.GILIRAN = (self.GILIRAN + 1) % self.MAX_PLAYER
-

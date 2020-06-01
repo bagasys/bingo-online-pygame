@@ -13,7 +13,7 @@ class Server:
         self.idCount = 0
         self.connected = set()
         self.games = {}
-        self.MAX_PLAYER = 2
+        self.MAX_PLAYER = 5
 
     def threaded_client(self, conn, p, gameId):
         conn.sendall(pickle.dumps(p))
@@ -87,9 +87,12 @@ class Server:
                 self.games[gameId] = Game(gameId)
                 print("Creating a new game...")
 
-            else:
+            elif self.idCount % self.MAX_PLAYER == 0:
                 self.games[gameId].ready = True
-                p = 1
+                p = self.MAX_PLAYER - 1
+
+            else:
+                p = self.idCount - 1
 
             start_new_thread(self.threaded_client, (conn, p, gameId))
 
