@@ -9,6 +9,7 @@ class Game:
         self.READY = False
         self.MAX_PLAYER = 2
         self.winner = []
+        self.winnertable = []
 
         self.STATE = 0
         self.STATE_WAIT = 0
@@ -95,6 +96,7 @@ class Game:
         for i in range(len(self.players)):
             if(self.isWinner(i)):
                 self.winner.append(i)
+                self.winnertable.append(self.players[i].table)
                 kondisi = True
         return kondisi
 

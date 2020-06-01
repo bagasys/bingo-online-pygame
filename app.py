@@ -32,6 +32,7 @@ class App:
         self.game = None
         self.net = None
         self.player = None
+        self.indeksTabel = -1
 
         self.texts_welcome = [Text("BINGO!", 80, 350, 50, 60, 100, (0, 0, 0)), ]
         self.buttons_welcome = [Button("Join Game", 30, 300, 250, 120, 60, (0, 255, 0)),
@@ -49,9 +50,15 @@ class App:
 
         self.texts_play = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)),]
 
-        self.texts_winplay = [Text("Winner", 40, 300, 150, 60, 100, (0, 0, 0)),
-                              Text("", 40, 300, 200, 60, 100, (0, 0, 0)),
-                              Text("", 40, 300, 250, 60, 100, (0, 0, 0))]
+        self.texts_winplay = [Text("Winner", 40, 450, 150, 60, 100, (0, 0, 0)),
+                              Text("", 40, 450, 0, 60, 100, (0, 0, 0)),
+                              Text("", 40, 450, 0, 60, 100, (0, 0, 0))]
+        
+        self.buttons_tabelwinplay = [Button("Lihat Tabel", 30, 550, 230, 150, 30, (0, 255, 0)),
+                                    Button("Lihat Tabel", 30, 550, 280, 150, 30, (0, 255, 0)),]
+
+        self.buttons_winplay = [Button("Play Again", 30, 450, 150, 120, 60, (0, 255, 0)),
+                                Button("Back to Home", 30, 450, 220, 130, 60, (0, 255, 255)),]
 
         self.button_send = Button("Send", 40, 625, 250, 60, 100, (0, 0, 0))
 
@@ -130,17 +137,47 @@ class App:
             self.handleWin()
 
     def handleWin(self):
+        indeks = -1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.RUNNING = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                click_pos = pygame.mouse.get_pos()
+                
+                for btn in self.buttons_winplay:
+                    if btn.isClicked(click_pos):
+                        if btn.text == "Lihat Tabel":
+                            indeks += 1
+                            self.indeksTabel = indeks
+                            return  
+                    
+
+                # for btn in self.buttons_winplay:
+                #     if btn.isClicked(click_pos):
+                #         if btn.text == "Play Again":
+                #             self.game.STATE == self.game.STATE_WAIT
+                #             return
+                #         elif btn.text == "Back to Home":
+                #             self.DISPLAY = self.DISPLAY_WELCOME
+                #             self.net = None          
+                #             return
 
         self.screen.fill((128, 128, 128))
-
-        temp = Text("", 40, 300, 0, 60, 100, (0, 0, 0))
+        if(indeks != -1):
+            self.game.winnertable[indeks].draw(self.screen)
+        # self.players[self.game.winner[self.indeksTabel]].tabel.draw(self.screen)
+        count = 0
+        for btn in self.buttons_tabelwinplay:
+            count += 1
+            btn.draw(self.screen)
+            if(count == len(self.game.winner)):
+                break
 
         for i in range (len(self.game.winner)):
             self.texts_winplay[i + 1].text = str(self.game.winner[i])
-            self.texts_winplay[i + 1].y = 150 + (i + 1) * 75
+            self.texts_winplay[i + 1].y = 150 + (i + 1) * 50
+
+            
         
         for text in self.texts_winplay:
             text.draw(self.screen)
