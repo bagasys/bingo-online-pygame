@@ -1,5 +1,5 @@
 from player import Player
-from tabel import Tabel
+from tableBergambar import TabelBergambar
 class Game:
     def __init__(self, id):
         self.players = []
@@ -96,7 +96,7 @@ class Game:
         for i in range(len(self.players)):
             if(self.isWinner(i)):
                 winner = {}
-                newTable = Tabel()
+                newTable = TabelBergambar()
                 newTable.tabel = self.players[i].table
                 newTable.tabelCoret = self.players[i].tableCoret
                 self.players[i].tableCoret
