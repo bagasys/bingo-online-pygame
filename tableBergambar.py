@@ -61,3 +61,9 @@ class TabelBergambar:
             idx += 1
         return -1
 
+    def reset(self):
+        self.tabel = [None] * 25
+        self.angkaTerpilih = None
+        self.count_isi = 0
+        self.tabelCoret = [False] * 25
+        self.tabelPilih = [False] * 25

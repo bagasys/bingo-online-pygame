@@ -88,6 +88,8 @@ class App:
             ButtonImg('view_winner', 555, 560, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
         ]
 
+        self.button_reset = ButtonImg('reset', 333, 550, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
+
     def start(self):
         while self.RUNNING:
             self.clock.tick(10)
@@ -199,6 +201,10 @@ class App:
                 for btn in self.buttons_winner:
                     if btn.isClicked(click_pos):
                         btn.onNormal()
+                if self.button_reset.isClicked(click_pos):
+                    self.net.disconnect()
+                    self.reset()
+                    return
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 index_winner = 0
@@ -217,6 +223,7 @@ class App:
 
 
         self.screen.fill((128, 128, 128))
+
         # self.game.winners[self.indeksTabel]['tabel'].draw(self.screen)
         self.winnerTabel.tabel = self.game.winners[self.indeksTabel]['tabel']
         self.winnerTabel.tabelCoret = self.game.winners[self.indeksTabel]['tabelCoret']
@@ -238,6 +245,7 @@ class App:
         for winner in self.texts_winnername:
             winner.text = "player " + str(self.game.winners[self.indeksTabel]['id']) + " table"
             winner.draw(self.screen)
+        self.button_reset.draw(self.screen)
 
         pygame.display.update()
 
@@ -371,6 +379,7 @@ class App:
             self.screen.blit(self.background_wait, (0, 0))
             # TO DO: Check if Waiting.
             # count_player = 2
+
             count_player = self.game.countPlayer()
             waiting_text = "waiting player-({}/5)...".format(count_player)
             waiting_font = pygame.font.SysFont("comicsans", 80)
@@ -420,6 +429,7 @@ class App:
         self.game = None
         self.net = None
         self.player = None
+        self.tabel.reset()
         self.DISPLAY = self.DISPLAY_WELCOME
         return
 
