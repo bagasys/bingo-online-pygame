@@ -23,6 +23,14 @@ class Network:
     def send(self, data):
         try:
             self.client.sendall(pickle.dumps(data))
-            return pickle.loads(self.client.recv(2048*5))
+            data = self.client.recv(2048*5)
+            if len(data) == 0:
+                print("network: PUTUS!!!!!!!!!!!!!!!!!!!!!!!")
+                return self.disconnect()
+            return pickle.loads(data)
         except socket.error as e:
             print(e)
+
+    def disconnect(self):
+        self.client.close()
+        return "disconnect"

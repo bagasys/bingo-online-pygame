@@ -7,8 +7,6 @@ from tabel import Tabel
 from buttonImg import ButtonImg
 class App:
     def __init__(self):
-
-
         self.selectedNumber = None
         self.tabel = TabelBergambar()
         self.winnerTabel = TabelBergambar()
@@ -259,6 +257,10 @@ class App:
                             data['type'] = 'coret'
                             data['payload'] = self.tabel.angkaTerpilih
                             self.game = self.net.send(data)
+                            if self.game == 'disconnect':
+                                self.reset()
+                                return
+
                             self.player = self.game.players[self.net.id]
                             self.tabel.tabelCoret = self.player.tableCoret
 
@@ -330,6 +332,9 @@ class App:
                                 data['payload'] = self.tabel.tabel
                                 # print('payload:', data['payload'])
                                 self.game = self.net.send(data)
+                                if self.game == 'disconnect':
+                                    self.reset()
+                                    return
                                 break
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -383,6 +388,9 @@ class App:
                 data['payload'] = None
                 try:
                     self.game = self.net.send(data)
+                    if self.game == 'disconnect':
+                        self.reset()
+                        return
                 except:
                     print("app: gagal dapet game pas awal")
                 self.player = self.game.players[self.net.id]
@@ -398,12 +406,24 @@ class App:
                 data['type'] = 'update'
                 data['payload'] = None
                 self.game = self.net.send(data)
+                if self.game == 'disconnect':
+                    self.reset()
+                    return
                 self.player = self.game.players[int(self.net.id)]
                 self.tabel.tabelCoret = self.player.tableCoret
                 # print('tabel coret terbaru:')
                 # print(self.player.tableCoret)
             self.frame_count = (self.frame_count + 1) % 30
             return True
+
+    def reset(self):
+        self.game = None
+        self.net = None
+        self.player = None
+        self.DISPLAY = self.DISPLAY_WELCOME
+        return
+
+
 
 if __name__ == "__main__":
     app = App()
