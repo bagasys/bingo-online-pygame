@@ -77,8 +77,13 @@ class App:
         btn_finish = ButtonImg('finish', 0, 0, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])
         btn_confirm = ButtonImg('confirm',0, 0, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png'])
         btn_backtomenu = ButtonImg('back_to_menu', 0, 0, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
-        self.buttons_welcome = [ButtonImg('join' ,300, 300, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 350, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
+<<<<<<< HEAD
+        self.buttons_welcome = [ButtonImg('join' ,300, 320, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 395, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
         self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 500, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png']), ButtonImg('kanan', 670, 500, ['Panah netral.png', 'Panah hover.png', 'Panah clicked.png']), ButtonImg('kiri', 570, 500, ['Panah2 netral.png', 'Panah2 hover.png', 'Panah2 clicked.png'])]
+=======
+        self.buttons_welcome = [ButtonImg('join' ,300, 320, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 395, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
+        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 450, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])]
+>>>>>>> 6efaea642d77427824d3c04b657fcab4a18cc3bf
         self.buttons_prepare = [ButtonImg('finish', 555, 330, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
         self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
         self.buttons_winner = [
@@ -315,23 +320,23 @@ class App:
         # for text in self.texts_prepareplay:
         #     text.draw(self.screen)
 
-        selected_text = "Selected Number: {}".format(self.selectedNumber)
-        selected_font = pygame.font.SysFont("comicsans", 25)
-        selected_surface = selected_font.render(selected_text, 0, (255, 255, 255))
-        self.screen.blit(selected_surface, (600, 250))
+        selected_text = "Selected Number: {}".format(self.tabel.angkaTerpilih)
+        selected_font = pygame.font.SysFont("comicsans", 30)
+        selected_surface = selected_font.render(selected_text, 0, (94, 100, 114))
+        self.screen.blit(selected_surface, (550, 250))
 
-        player_text = "you are player {}".format(self.player.id)
-        player_font = pygame.font.SysFont("comicsans", 18)
-        player_surface = player_font.render(player_text, 0, (255, 255, 255))
+        player_text = "You are player {}".format(self.player.id + 1)
+        player_font = pygame.font.SysFont("comicsans", 35)
+        player_surface = player_font.render(player_text, 0, (94, 100, 114))
         self.screen.blit(player_surface, (10, 10))
 
-        if self.player.id == self.game.GILIRAN:
+        if (self.player.id + 1) == (self.game.GILIRAN + 1):
             turn_text = "Your Turn!"
         else:
-            turn_text = "Player's {} Turn".format(self.game.GILIRAN)
+            turn_text = "Player's {} Turn".format(self.game.GILIRAN + 1)
 
-        turn_font = pygame.font.SysFont("comicsans", 20)
-        turn_surface = turn_font.render(turn_text, 0, (255, 255, 255))
+        turn_font = pygame.font.SysFont("comicsans", 35)
+        turn_surface = turn_font.render(turn_text, 0, (94, 100, 114))
         self.screen.blit(turn_surface, (300, 10))
 
         pygame.display.update()
