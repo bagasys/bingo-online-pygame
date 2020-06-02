@@ -78,7 +78,7 @@ class App:
         btn_confirm = ButtonImg('confirm',0, 0, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png'])
         btn_backtomenu = ButtonImg('back_to_menu', 0, 0, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
         self.buttons_welcome = [ButtonImg('join' ,300, 320, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 395, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
-        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 435, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png']), ButtonImg('kanan', 670, 500, ['Panah netral.png', 'Panah hover.png', 'Panah clicked.png']), ButtonImg('kiri', 570, 500, ['Panah2 netral.png', 'Panah2 hover.png', 'Panah2 clicked.png'])]
+        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 500, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png']), ButtonImg('kanan', 670, 500, ['Panah netral.png', 'Panah hover.png', 'Panah clicked.png']), ButtonImg('kiri', 570, 500, ['Panah2 netral.png', 'Panah2 hover.png', 'Panah2 clicked.png'])]
         self.buttons_prepare = [ButtonImg('finish', 555, 400, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
         self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
         self.buttons_winner = [
@@ -91,7 +91,7 @@ class App:
 
 
 
-        self.button_reset = ButtonImg('reset', 333, 550, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
+        self.button_reset = ButtonImg('reset', 333, 535, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
 
     def start(self):
         while self.RUNNING:
