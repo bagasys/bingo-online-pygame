@@ -83,10 +83,10 @@ class App:
         self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
         self.buttons_winner = [
             ButtonImg('view_winner', 555, 230, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
-            ButtonImg('view_winner', 555, 290, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
-            ButtonImg('view_winner', 555, 350, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 555, 300, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
             ButtonImg('view_winner', 555, 370, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
-            ButtonImg('view_winner', 555, 560, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 555, 440, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 555, 510, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
         ]
 
 
@@ -251,14 +251,14 @@ class App:
             count += 1
 
         for i in range (len(self.game.winners)):
-            self.texts_winplay[i + 1].text = str(self.game.winners[i]['id'])
+            self.texts_winplay[i + 1].text = str(self.game.winners[i]['id'] + 1)
             self.texts_winplay[i + 1].y = 150 + (i + 1) * 50
 
         for text in self.texts_winplay:
             text.draw(self.screen)
 
         for winner in self.texts_winnername:
-            winner.text = "player " + str(self.game.winners[self.indeksTabel]['id']) + " table"
+            winner.text = "player " + str(self.game.winners[self.indeksTabel]['id'] + 1) + " table"
             winner.draw(self.screen)
         self.button_reset.draw(self.screen)
 
