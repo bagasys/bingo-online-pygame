@@ -48,12 +48,12 @@ class App:
 
         self.texts_play = [Text("Selected Number", 40, 625, 150, 60, 100, (0, 0, 0)),]
 
-        self.texts_winplay = [Text("Winner", 40, 550, 150, 60, 100, (0, 0, 0)),
-                              Text("", 40, 550, 0, 60, 100, (0, 0, 0)),
-                              Text("", 40, 550, 0, 60, 100, (0, 0, 0)),
-                              Text("", 40, 550, 0, 60, 100, (0, 0, 0)),
-                              Text("", 40, 550, 0, 60, 100, (0, 0, 0)),
-                              Text("", 40, 550, 0, 60, 100, (0, 0, 0))]
+        self.texts_winplay = [Text("Winner", 40, 625, 150, 60, 100, (94, 100, 114)),
+                              Text("", 40, 530, 0, 60, 100, (94, 100, 114)),
+                              Text("", 40, 530, 0, 60, 100, (94, 100, 114)),
+                              Text("", 40, 530, 0, 60, 100, (94, 100, 114)),
+                              Text("", 40, 530, 0, 60, 100, (94, 100, 114)),
+                              Text("", 40, 530, 0, 60, 100, (94, 100, 114))]
 
         self.buttons_tabelwinplay = [Button("Lihat Tabel", 30, 625, 230, 125, 30, (0, 255, 0)),
                                      Button("Lihat Tabel", 30, 625, 280, 125, 30, (0, 255, 0)),
@@ -61,7 +61,7 @@ class App:
                                      Button("Lihat Tabel", 30, 625, 380, 125, 30, (0, 255, 0)),
                                      Button("Lihat Tabel", 30, 625, 430, 125, 30, (0, 255, 0))]
 
-        self.texts_winnername = [Text("", 40, 300, 10, 60, 100, (0, 0, 0)),]
+        self.texts_winnername = [Text("", 40, 400, 10, 60, 100, (94, 100, 114)),]
 
         self.buttons_winplay = [Button("Play Again", 30, 450, 150, 120, 60, (0, 255, 0)),
                                 Button("Back to Home", 30, 450, 220, 130, 60, (0, 255, 255)),]
@@ -78,15 +78,15 @@ class App:
         btn_confirm = ButtonImg('confirm',0, 0, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png'])
         btn_backtomenu = ButtonImg('back_to_menu', 0, 0, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png'])
         self.buttons_welcome = [ButtonImg('join' ,300, 320, ['Join Game netral.png', 'Join Game hover.png', 'Join Game clicked.png']), ButtonImg('how_to_play' ,300, 395, ['How to Play netral.png', 'How to Play hover.png', 'How To Play clicked.png'])]
-        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 500, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png']), ButtonImg('kanan', 670, 500, ['Panah netral.png', 'Panah hover.png', 'Panah clicked.png']), ButtonImg('kiri', 570, 500, ['Panah2 netral.png', 'Panah2 hover.png', 'Panah2 clicked.png'])]
+        self.buttons_howtoplay = [ButtonImg('back_to_menu', 300, 435, ['Back to Menu netral.png', 'Back to Menu hover.png', 'Back to Menu clicked.png']), ButtonImg('kanan', 670, 500, ['Panah netral.png', 'Panah hover.png', 'Panah clicked.png']), ButtonImg('kiri', 570, 500, ['Panah2 netral.png', 'Panah2 hover.png', 'Panah2 clicked.png'])]
         self.buttons_prepare = [ButtonImg('finish', 555, 400, ['Finish netral.png', 'Finish hover.png', 'Finish clicked.png'])]
         self.buttons_play = [ButtonImg('confirm',555, 330, ['Confirm netral.png', 'Confirm hover.png', 'Confirm clicked.png']),]
         self.buttons_winner = [
-            ButtonImg('view_winner', 555, 230, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
-            ButtonImg('view_winner', 555, 300, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
-            ButtonImg('view_winner', 555, 370, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
-            ButtonImg('view_winner', 555, 440, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
-            ButtonImg('view_winner', 555, 510, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 580, 230, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 580, 290, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 580, 350, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 580, 410, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
+            ButtonImg('view_winner', 580, 470, ['View Table netral.png', 'View Table hover.png', 'View Table clicked.png']),
         ]
 
 
@@ -236,8 +236,7 @@ class App:
                     else:
                         btn.onNormal()
 
-
-        self.screen.fill((128, 128, 128))
+        self.screen.blit(self.background, (0, 0))
 
         # self.game.winners[self.indeksTabel]['tabel'].draw(self.screen)
         self.winnerTabel.tabel = self.game.winners[self.indeksTabel]['tabel']
@@ -252,13 +251,13 @@ class App:
 
         for i in range (len(self.game.winners)):
             self.texts_winplay[i + 1].text = str(self.game.winners[i]['id'] + 1)
-            self.texts_winplay[i + 1].y = 150 + (i + 1) * 50
+            self.texts_winplay[i + 1].y = 150 + (i + 1) * 60
 
         for text in self.texts_winplay:
             text.draw(self.screen)
 
         for winner in self.texts_winnername:
-            winner.text = "player " + str(self.game.winners[self.indeksTabel]['id'] + 1) + " table"
+            winner.text = "Player " + str(self.game.winners[self.indeksTabel]['id'] + 1) + " table"
             winner.draw(self.screen)
         self.button_reset.draw(self.screen)
 
